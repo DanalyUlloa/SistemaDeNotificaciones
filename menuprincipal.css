@@ -1,0 +1,199 @@
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estructura principal */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Barra superior */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #006747; /* Verde UABC */
+    color: white;
+    padding: 20px;
+    font-size: 32px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.header-title {
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.logout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logout .icon {
+    font-size: 30px;
+}
+
+.logout .text {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Barra lateral izquierda */
+.sidebar {
+    width: 300px; /* Aumentamos el ancho de la barra lateral */
+    background-color: #006747; /* Verde UABC */
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: fixed;
+    top: 80px; /* Desplazado hacia abajo por la barra superior */
+    bottom: 0;
+    border-right: 2px solid black;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px; /* Aumentar el espacio entre los íconos */
+    cursor: pointer;
+    padding: 15px; /* Aumentar el tamaño de los íconos */
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    width: 100%; /* Aseguramos que el elemento ocupe todo el ancho disponible */
+    background-color: transparent; /* Sin fondo dorado en el menú */
+}
+
+.menu-item:hover {
+    background-color: #a4c4a2;
+}
+
+.menu-item .icon {
+    margin-right: 15px;
+    padding: 10px;
+    background-color: #ffcc00; /* Fondo dorado solo para los iconos */
+    border-radius: 50%;
+}
+
+.menu-item .icon-img {
+    width: 40px; /* Ajustar el tamaño de las imágenes */
+    height: 40px;
+}
+
+.menu-item .text {
+    font-size: 18px;
+}
+
+/* Contenido principal */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 80px; /* Ajusta para el espacio de la barra superior */
+}
+
+.notification-box {
+    background-color: #006747; /* Verde UABC */
+    color: white;
+    width: 700px; /* Ajustamos el tamaño del cuadro */
+    height: 350px; /* Ajustamos la altura para hacerlo más rectangular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: none; /* Eliminamos la sombra */
+}
+
+.notification-box .box-title {
+    background-color: #ffcc00; /* Amarillo */
+    color: black;
+    font-size: 22px; /* Aumentar tamaño del título */
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.notification-box .image {
+    width: 120px; /* Aumentar tamaño de la imagen */
+    height: auto;
+    position: absolute;
+    bottom: 20px;
+    right: 20px; /* Mover la imagen un poco más a la derecha */
+}
+
+/* Barra inferior derecha */
+.help-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: white; /* Cambié el color de fondo a blanco */
+    color: #006747; /* Verde UABC */
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid #006747; /* Agregar un borde verde */
+}
+
+.help-box .help-icon {
+    font-size: 30px;
+}
+
+.help-box .help-text {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .header {
+        font-size: 20px;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        border-right: none;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .notification-box {
+        width: 90%;
+        height: auto;
+    }
+}
