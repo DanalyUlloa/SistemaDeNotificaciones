@@ -57,7 +57,7 @@ body {
 
 /* Barra lateral izquierda */
 .sidebar {
-    width: 300px; /* Aumentamos el ancho de la barra lateral */
+    width: 250px; /* Aumentamos el ancho de la barra lateral */
     background-color: #006747; /* Verde UABC */
     color: white;
     padding: 20px;
@@ -116,11 +116,11 @@ body {
 .notification-box {
     background-color: #006747; /* Verde UABC */
     color: white;
-    width: 700px; /* Ajustamos el tamaño del cuadro */
-    height: 350px; /* Ajustamos la altura para hacerlo más rectangular */
+    width: 850px; /* Ajustamos el tamaño del cuadro */
+    height: 500px; /* Ajustamos la altura para hacerlo más rectangular */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Cambiamos a space-between */
     padding: 20px;
     border-radius: 8px;
     text-align: center;
@@ -133,18 +133,20 @@ body {
     font-size: 22px; /* Aumentar tamaño del título */
     font-weight: bold;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     border-radius: 8px;
     display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 31%;
 }
 
 .notification-box .image {
-    width: 120px; /* Aumentar tamaño de la imagen */
+    width: 350px; /* Aumentar tamaño de la imagen */
     height: auto;
-    position: absolute;
-    bottom: 20px;
-    right: 20px; /* Mover la imagen un poco más a la derecha */
+    margin-left: 470px; /* Espacio entre el título y la imagen */
 }
+
 
 /* Barra inferior derecha */
 .help-box {
