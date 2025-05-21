@@ -1,0 +1,178 @@
+/* Fondo general gris claro */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d9d9d9;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor principal centrado vertical y horizontal */
+.pantalla {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Título fuera del recuadro, centrado y en color neutro */
+.titulo-principal {
+    color: #333;
+    font-size: 36px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Botón regresar – esquina superior izquierda de la pantalla */
+.btn-regresar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #2e2e2e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Botón ayuda – esquina inferior derecha de la pantalla */
+.btn-ayuda {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #2e2e2e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Recuadro con fondo verde institucional, más grande */
+.contenedor-formulario {
+    background-color: #00552E; /* Verde UABC */
+    padding: 40px;
+    border-radius: 20px;
+    width: 700px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    color: white;
+}
+
+/* Inputs organizados en grilla */
+.formulario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
+}
+
+/* Sección de checkbox y botón registrar */
+.formulario-opciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+/* Botón Registrar con amarillo UABC */
+.btn-registrar {
+    background-color: #FFD700;
+    color: black;
+    padding: 12px 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-contenido {
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    color: black;
+    width: 450px;
+}
+
+.popup-titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.popup-botones {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.popup-botones button {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Aceptar verde */
+.btn-aceptar {
+    background-color: #00552E;
+    color: white;
+}
+
+/* Cancelar rojo */
+.btn-cancelar {
+    background-color: #C62828;
+    color: white;
+
+    .mensaje-error {
+        color: #FFD700;
+        font-size: 14px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+
+    input.error {
+        border: 2px solid #FFD700;
+        background-color: #ffeeba;
+    }
+
+}

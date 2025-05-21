@@ -1,0 +1,63 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0; /* Color de fondo claro */
+}
+
+.container {
+    background-color: #006837; /* Color de fondo verde */
+    border-radius: 50px; /* Bordes redondeados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    padding: 20px;
+    width: 300px; /* Ancho */
+    margin: auto;
+    position: relative;
+    top: 100px;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 20px auto; /* Centra el logo */
+    height: 60px; /* Ajusta la altura del logo */
+}
+
+h2 {
+    color: white; /* Color del texto del encabezado */
+    text-align: center;
+    font-size: 18px; /* Tamaño del texto */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+label {
+    color: white; /* Color de las etiquetas */
+    font-size: 12px; /* Tamaño del texto de las etiquetas */
+}
+
+input {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Espaciado interno */
+    margin-top: 5px; /* Espacio superior */
+    margin-bottom: 15px; /* Espacio inferior */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.3); /* Sombra interior */
+}
+
+input[type="email"], input[type="password"] {
+    background-color: white; /* Fondo blanco en los campos de entrada */
+    color: #333; /* Texto en negro */
+}
+
+button {
+    background-color: #d7dbd7; /* Color del botón */
+    color: black; /* Color del texto del botón */
+    padding: 10px;
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor tipo mano al pasar por encima */
+    font-size: 14px; /* Tamaño del texto */
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+button:hover {
+    background-color: #c2c2c2; /* Fondo del botón al pasar el cursor */
+}
