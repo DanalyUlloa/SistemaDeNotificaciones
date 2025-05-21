@@ -1,6 +1,7 @@
 package com.uabc.sistema.Negocio;
 
 
+import com.uabc.sistema.Entidad.Administrador;
 import com.uabc.sistema.Persistencia.AdministradorDao;
 
 public class Main {
@@ -8,7 +9,7 @@ public class Main {
         String correoBuscado = "bautista.quintero@uabc.edu.mx";
 
         AdministradorDao repo = new AdministradorDao();
-        src.main.java.Entidad.Administrador admin = repo.obtenerPorCorreo(correoBuscado);
+        Administrador admin = repo.obtenerPorCorreo(correoBuscado);
 
         if (admin != null) {
             System.out.println("Bienvenido, " + admin.getnombre());

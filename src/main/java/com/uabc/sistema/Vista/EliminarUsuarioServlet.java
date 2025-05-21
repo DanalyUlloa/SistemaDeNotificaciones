@@ -10,11 +10,9 @@ import com.google.gson.*;
 
 @WebServlet("/eliminarUsuario")
 public class EliminarUsuarioServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        BufferedReader reader = request.getReader();
-        JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-
-        String id = json.get("id").getAsString();
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
 
         UsuarioService service = new UsuarioService();
         boolean eliminado = service.eliminarUsuario(id);
