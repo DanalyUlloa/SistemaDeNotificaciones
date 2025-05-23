@@ -1,4 +1,6 @@
-package src.main.java.Entidad;
+package com.uabc.sistema.Entidad;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 
 public class Administrador {
     private int num_empleado;

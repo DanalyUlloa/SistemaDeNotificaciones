@@ -9,37 +9,31 @@
 <div class="pantalla">
     <button class="btn-regresar" onclick="location.href='GestionUsuarios.html'">⮌</button>
 
-    <h1 class="titulo-principal">Registrar Usuario</h1>
-
     <div class="contenedor-formulario">
+        <h2 class="titulo-principal">Registrar Usuario</h2>
         <form id="formRegistro" action="/sistema/registrarUsuario" method="post" onsubmit="return mostrarConfirmacion(event)">
-            <div class="formulario-grid">
-                <input type="text" name="nombre" placeholder="Nombre" required>
-                <input type="text" name="apellidoPaterno" placeholder="Apellido Paterno" required>
-                <input type="text" name="apellidoMaterno" placeholder="Apellido Materno" required>
-            </div>
+            <div class="formulario-dos-columnas">
+                <!-- Columna Izquierda -->
+                <div class="columna izquierda">
+                    <input type="text" name="nombre" placeholder="Nombre" required>
+                    <input type="text" name="apellidoPaterno" placeholder="Apellido Paterno" required>
+                    <input type="text" name="apellidoMaterno" placeholder="Apellido Materno" required>
+                    <input type="text" name="NumEmpleado" placeholder="Número de empleado" required>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="permisoRegistro">
+                        ¿Habilitar permisos para registrar usuarios?
+                    </label>
+                </div>
 
-            <div class="formulario-grid">
-                <input type="text" name="NumEmpleado" placeholder="Número de empleado" required>
-            </div>
-
-            <div class="formulario-grid">
-                <input type="email" name="correo" placeholder="Correo institucional" required>
-                <input type="password" name="contrasena" placeholder="Contraseña (mínimo 5 caracteres)" required>
-            </div>
-
-            <div class="formulario-opciones">
-                <label>
-                    <input type="checkbox" name="permisoRegistro">
-                    ¿Habilitar permisos para registrar usuarios?
-                </label>
-                <button type="submit" class="btn-registrar">Registrar</button>
+                <!-- Columna Derecha -->
+                <div class="columna derecha">
+                    <input type="email" name="correo" placeholder="Correo institucional" required>
+                    <input type="password" name="contrasena" placeholder="Contraseña (mínimo 5 caracteres)" required>
+                    <button type="submit" class="btn-registrar">Registrar</button>
+                </div>
             </div>
         </form>
-
-        <button class="btn-ayuda" title="Ayuda">?</button>
     </div>
-</div>
 
 <div id="popupConfirmacion" class="popup">
     <div class="popup-contenido">
@@ -133,7 +127,6 @@
             contenedor.appendChild(boton);
         }
     }
-</script>
-
-</body>
+        </script>
+    </body>
 </html>
