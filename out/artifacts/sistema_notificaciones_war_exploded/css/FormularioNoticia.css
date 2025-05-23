@@ -7,6 +7,7 @@ body {
     color:azure;
 }
 
+
 .form-container {
     max-width: 600px;
     margin: 20px auto;
@@ -15,7 +16,17 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+/* Barra lateral */
+.sidebar {
+    background-color: #00552E;
+    height: 100%;
+    width: 220px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 h1 {
     text-align: center;
     color: #333;
