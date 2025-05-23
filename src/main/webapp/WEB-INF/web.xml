@@ -3,16 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                              http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
+         version="3.0">
+
+
 
     <servlet>
-        <servlet-name>GoogleLoginServlet</servlet-name>
-        <servlet-class>com.uabc.sistema.GoogleLoginServlet</servlet-class>
+        <servlet-name>ObtenerUsuariosServlet</servlet-name>
+        <servlet-class>com.uabc.sistema.Vista.ObtenerUsuariosServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>GoogleLoginServlet</servlet-name>
-        <url-pattern>/login/google</url-pattern>
+        <servlet-name>ObtenerUsuariosServlet</servlet-name>
+        <url-pattern>/obtenerUsuarios</url-pattern>
     </servlet-mapping>
 
 </web-app>
