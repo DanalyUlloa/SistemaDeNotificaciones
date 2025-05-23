@@ -14,7 +14,7 @@
 <div class="pantalla">
     <!-- Barra lateral -->
     <div class="sidebar">
-        <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo">
+        <img src="../img/UABC.png" alt="Logo UABC" class="logo">
         <a href="MenuPrincipal.html">Volver al Menu principal</a>
         <a href="GestionNoticias.html">Ir a Gestión de Noticias</a>
     </div>
@@ -102,8 +102,8 @@
     };
 
     function cargarUsuarios() {
-        fetch('/sistema_notificaciones/obtenerUsuarios')
-                .then(response => response.json())
+        fetch('/SistemaDeNotificaciones/obtenerUsuarios')
+            .then(response => response.json())
             .then(data => {
                 tabla.innerHTML = "";
                 data.forEach(usuario => {
