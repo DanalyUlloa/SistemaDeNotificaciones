@@ -1,6 +1,6 @@
 package com.uabc.sistema.Persistencia;
 
-import src.main.java.Entidad.Administrador;
+import com.uabc.sistema.Entidad.Administrador;
 
 import java.sql.*;
 

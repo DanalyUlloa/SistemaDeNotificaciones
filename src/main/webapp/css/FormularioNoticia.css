@@ -21,6 +21,25 @@ h1 {
     color: #333;
 }
 
+.volver {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.btn-volver {
+    background-color: #005b3c;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.btn-volver img {
+    width: 24px;
+    height: 24px;
+}
+
 /* Estilos del formulario */
 .form-group {
     margin-bottom: 15px;
