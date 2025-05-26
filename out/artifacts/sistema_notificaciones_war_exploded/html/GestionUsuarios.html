@@ -102,7 +102,7 @@
     };
 
     function cargarUsuarios() {
-        fetch('/sistema/obtenerUsuarios')
+        fetch('/SistemaDeNotificaciones/obtenerUsuarios')
             .then(response => response.json())
             .then(data => {
                 tabla.innerHTML = "";

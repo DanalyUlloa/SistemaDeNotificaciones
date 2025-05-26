@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/obtenerUsuarios")
+
 public class ObtenerUsuariosServlet extends HttpServlet {
 
     @Override
