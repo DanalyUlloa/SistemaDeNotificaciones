@@ -14,7 +14,7 @@
 <div class="pantalla">
     <!-- Barra lateral -->
     <div class="sidebar">
-        <img src="../img/UABC.png" alt="Logo UABC" class="logo">
+        <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo">
         <a href="MenuPrincipal.html">Volver al Menu principal</a>
         <a href="GestionNoticias.html">Ir a Gestión de Noticias</a>
     </div>
@@ -102,7 +102,7 @@
     };
 
     function cargarUsuarios() {
-        fetch('/sistema_notificaciones/obtenerUsuarios')
+        fetch('/SistemaDeNotificaciones/obtenerUsuarios')
                 .then(response => response.json())
             .then(data => {
                 tabla.innerHTML = "";
@@ -143,7 +143,7 @@
             const nuevoNombre = fila.children[1].innerText.trim();
             const nuevoCorreo = fila.children[2].innerText.trim();
 
-            fetch('/sistema/actualizarUsuario', {
+            fetch('/SistemaDeNotificaciones/actualizarUsuario', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -189,7 +189,7 @@
         const id = filaSeleccionada.children[0].innerText.trim();
         if (!confirm(`¿Seguro que deseas eliminar al usuario con ID ${id}?`)) return;
 
-        fetch('/sistema/eliminarUsuario?id=' + encodeURIComponent(id), {
+        fetch('/SistemaDeNotificaciones/eliminarUsuario?id=' + encodeURIComponent(id), {
             method: 'DELETE'
         }).then(response => {
             if (response.ok) {
