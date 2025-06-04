@@ -54,7 +54,7 @@ public class UsuarioDao {
         }
     }
 
-    // ✅ Método para obtener todos los usuarios
+    // Método para obtener todos los usuarios
     public List<Usuario> obtenerTodos() {
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo FROM usuarios";
@@ -100,5 +100,25 @@ public class UsuarioDao {
         }
     }
 
+    public Usuario autenticar(String correo, String contrasena) {
+        String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo FROM usuarios WHERE correo = ? AND contrasena = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, correo);
+            ps.setString(2, contrasena);
+            ResultSet rs = ps.executeQuery();
 
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setNumEmpleado(rs.getString("NumEmpleado"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                usuario.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                usuario.setCorreo(rs.getString("correo"));
+                return usuario;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Si no encuentra usuario
+    }
 }

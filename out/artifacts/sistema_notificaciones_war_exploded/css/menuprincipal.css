@@ -55,9 +55,24 @@ body {
     margin-top: 5px;
 }
 
+.logout img {
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.logout img:hover {
+    transform: scale(1.15);
+    filter: brightness(1.2); /* Efecto de brillo */
+}
+
+.logout span {
+    font-size: 14px;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
 /* Barra lateral izquierda */
 .sidebar {
-    width: 250px; /* Aumentamos el ancho de la barra lateral */
+    width: 250px;
     background-color: #006747; /* Verde UABC */
     color: white;
     padding: 20px;
@@ -66,8 +81,11 @@ body {
     align-items: flex-start;
     justify-content: center;
     position: fixed;
-    top: 80px; /* Desplazado hacia abajo por la barra superior */
+    top: 0;
+    left: 0;
     bottom: 0;
+    height: 100vh;
+    z-index: 9;
     border-right: 2px solid black;
 }
 
@@ -188,6 +206,7 @@ body {
         flex-direction: row;
         justify-content: space-around;
         border-right: none;
+        top: 0;
     }
 
     .main-content {

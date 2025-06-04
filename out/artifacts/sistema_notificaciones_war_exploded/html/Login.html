@@ -2,15 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="utf-8"/>
-    <!-- Hace que la página sea responsiva en dispositivos móviles -->
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>
-        Sistema de Notificaciones
-    </title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <!-- Importa la fuente Roboto desde Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <title>Sistema de Notificaciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -19,43 +14,64 @@
 </head>
 <body class="bg-[#d7dbd7] min-h-screen flex items-center justify-center relative">
 
-<!-- Imagen de fondo de un cimarron -->
-<img alt="Fondo de cimarron detras del login"
+<!-- Imagen de fondo -->
+<img alt="Fondo de cimarron"
      class="absolute inset-0 w-full h-full object-contain opacity-20 pointer-events-none select-none"
-     height="600" src="../../../../Imagenes/cimaGreenMobile%201.png"
-     width="600"/>
+     src="../img/cimaGreenMobile%201.png" />
 
-<div class="relative bg-[#006837] rounded-2xl shadow-lg p-8 w-[320px] sm:w-[330px] text-white flex flex-col items-center">
+        <div class="relative bg-[#006837] rounded-2xl shadow-lg p-8 w-[320px] sm:w-[330px] text-white flex flex-col items-center">
+            <img alt="Logo uabc" class="mb-6" src="../img/UABC.png" width="120" height="60"/>
+            <h2 class="font-bold text-center mb-6 text-sm">Inicio de Sesión</h2>
 
-    <!-- Logo UABC en la parte superior -->
-    <img alt="Logo uabc"
-         class="mb-6"
-         height="60"
-         src="../../../../Imagenes/UABC.png"
-         width="120"/>
+            <!-- Formulario tradicional -->
+            <form method="POST" action="/SistemaDeNotificaciones/Login" class="w-full space-y-4">
+                <div class="flex flex-col text-[10px]">
+                    <label class="mb-1" for="correo">Correo</label>
+                    <input name="correo" id="correo" type="email" required autocomplete="email"
+                           class="rounded-md px-3 py-2 text-black text-xs"/>
+                </div>
+                <div class="flex flex-col text-[10px]">
+                    <label class="mb-1" for="contrasena">Contraseña</label>
+                    <input name="contrasena" id="contrasena" type="password" required autocomplete="current-password"
+                           class="rounded-md px-3 py-2 text-black text-xs"/>
+                </div>
 
-    <h2 class="font-bold text-center mb-6 text-sm">
-        Inicio de Sesión
-    </h2>
-    <form class="w-full space-y-4">
-        <div class="flex flex-col text-[10px]">
-            <label class="mb-1" for="email">
-                Correo
-            </label>
-            <input autocomplete="email" class="rounded-md px-3 py-2 text-black text-xs" id="email" type="email"/>
+                <button type="submit"
+                        class="bg-[#d7dbd7] text-black text-xs rounded-md py-1 px-4 mx-auto block shadow-sm hover:brightness-90 transition">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <!-- Mensaje de error si falló el login -->
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                if (params.get("error") === "credenciales") {
+                    document.write("<p class='text-red-200 text-xs mt-3'>Correo o contraseña incorrectos.</p>");
+                } else if (params.get("error") === "servidor") {
+                    document.write("<p class='text-red-200 text-xs mt-3'>Error del servidor. Inténtalo más tarde.</p>");
+                }
+            </script>
+
+            <div class="my-4 text-xs text-white">o</div>
+
+            <!-- Google Sign-In -->
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <div id="g_id_onload"
+                 data-client_id="298231505473-pk492muo90nlshb6u6a5hctqe4c6kn9r.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-login_uri="http://localhost:8080/SistemaDeNotificaciones/login/google"
+                 data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-size="large"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+            </div>
         </div>
-        <div class="flex flex-col text-[10px]">
-            <label class="mb-1" for="password">
-                Contraseña
-            </label>
-            <input autocomplete="current-password" class="rounded-md px-3 py-2 text-black text-xs" id="password" type="password"/>
-        </div>
-
-        <button class="bg-[#d7dbd7] text-black text-xs rounded-md py-1 px-4 mx-auto block shadow-sm hover:brightness-90 transition"
-                type="submit">
-            Iniciar Sesion
-        </button>
-    </form>
-</div>
-</body>
+    </body>
 </html>

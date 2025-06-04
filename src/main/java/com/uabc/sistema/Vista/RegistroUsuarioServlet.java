@@ -33,5 +33,3 @@ public class RegistroUsuarioServlet extends HttpServlet {
         }
     }
 }
-
-
