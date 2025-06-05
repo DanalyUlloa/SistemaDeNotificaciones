@@ -21,6 +21,9 @@ public class RegistroUsuarioServlet extends HttpServlet {
         usuario.setCorreo(request.getParameter("correo"));
         usuario.setContrasena(request.getParameter("contrasena"));
 
+        String permiso = request.getParameter("permisoRegistro");
+        usuario.setPermisoRegistro("on".equals(permiso) ? 1 : 0);
+        
         UsuarioService service = new UsuarioService();
         boolean registrado = service.registrar(usuario);
 
@@ -33,5 +36,3 @@ public class RegistroUsuarioServlet extends HttpServlet {
         }
     }
 }
-
-

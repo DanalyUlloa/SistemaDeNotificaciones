@@ -14,8 +14,8 @@
 <div class="pantalla">
     <!-- Barra lateral -->
     <div class="sidebar">
-        <img src="../img/UABC.png" alt="Logo UABC" class="logo">
-        <a href="MenuPrincipal.html">Volver al Menu principal</a>
+        <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo">
+        <a href="MenuPrincipal.jsp">Volver al Menu principal</a>
         <a href="GestionNoticias.html">Ir a Gestión de Noticias</a>
     </div>
 
@@ -37,12 +37,6 @@
             </button>
             <button onclick="eliminarSeleccionado()" title="Eliminar usuario">
                 <img src="../img/Eliminar.png" alt="Eliminar">
-            </button>
-            <button title="Deshacer">
-                <img src="../img/Deshacer.png" alt="Deshacer">
-            </button>
-            <button title="Rehacer">
-                <img src="../img/Rehacer.png" alt="Rehacer">
             </button>
             <button title="Ordenar alfabéticamente" onclick="ordenarPorNombre()">
                 <img src="../img/Ordenar.png" alt="Ordenar">
@@ -103,7 +97,7 @@
 
     function cargarUsuarios() {
         fetch('/SistemaDeNotificaciones/obtenerUsuarios')
-            .then(response => response.json())
+                .then(response => response.json())
             .then(data => {
                 tabla.innerHTML = "";
                 data.forEach(usuario => {
@@ -112,7 +106,7 @@
                         <td>${usuario.id}</td>
                         <td contenteditable="false">${usuario.nombre}</td>
                         <td contenteditable="false">${usuario.correo}</td>
-                        <td>${usuario.permisos || 'No'}</td>
+                        <td>${usuario.permisoRegistro === "Sí" ? 'Sí' : 'No'}</td>
                     `;
                     row.onclick = () => seleccionarFila(row);
                     tabla.appendChild(row);
@@ -143,7 +137,7 @@
             const nuevoNombre = fila.children[1].innerText.trim();
             const nuevoCorreo = fila.children[2].innerText.trim();
 
-            fetch('/sistema/actualizarUsuario', {
+            fetch('/SistemaDeNotificaciones/actualizarUsuario', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -189,7 +183,7 @@
         const id = filaSeleccionada.children[0].innerText.trim();
         if (!confirm(`¿Seguro que deseas eliminar al usuario con ID ${id}?`)) return;
 
-        fetch('/sistema/eliminarUsuario?id=' + encodeURIComponent(id), {
+        fetch('/SistemaDeNotificaciones/eliminarUsuario?id=' + encodeURIComponent(id), {
             method: 'DELETE'
         }).then(response => {
             if (response.ok) {

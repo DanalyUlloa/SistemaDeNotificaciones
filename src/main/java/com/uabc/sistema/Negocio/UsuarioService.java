@@ -41,10 +41,10 @@ public class UsuarioService {
             return new ArrayList<>();
         }
     }
-    public boolean actualizarUsuario(String id, String nombre, String apeP, String apeM, String correo) {
+    public boolean actualizarUsuario(String id, String nombre, String apeP, String apeM, String correo, int permisoRegistro) {
         try (Connection conexion = db.conectar()) {
             UsuarioDao dao = new UsuarioDao(conexion);
-            return dao.actualizarUsuario(id, nombre, apeP, apeM, correo);
+            return dao.actualizarUsuario(id, nombre, apeP, apeM, correo, permisoRegistro);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
