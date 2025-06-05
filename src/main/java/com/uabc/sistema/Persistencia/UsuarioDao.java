@@ -14,7 +14,7 @@ public class UsuarioDao {
     }
 
     public boolean registrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo, contrasena, permisoRegistro) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, usuario.getNumEmpleado());
             ps.setString(2, usuario.getNombre());
@@ -22,6 +22,7 @@ public class UsuarioDao {
             ps.setString(4, usuario.getApellidoMaterno());
             ps.setString(5, usuario.getCorreo());
             ps.setString(6, usuario.getContrasena());
+            ps.setInt(7, usuario.getPermisoRegistro());
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -57,7 +58,7 @@ public class UsuarioDao {
     // Método para obtener todos los usuarios
     public List<Usuario> obtenerTodos() {
         List<Usuario> lista = new ArrayList<>();
-        String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo FROM usuarios";
+        String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo, permisoRegistro FROM usuarios";
         try (Statement stmt = conexion.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -68,6 +69,7 @@ public class UsuarioDao {
                 u.setApellidoPaterno(rs.getString("apellidoPaterno"));
                 u.setApellidoMaterno(rs.getString("apellidoMaterno"));
                 u.setCorreo(rs.getString("correo"));
+                u.setPermisoRegistro(rs.getInt("permisoRegistro"));
                 lista.add(u);
             }
         } catch (SQLException e) {
@@ -75,14 +77,15 @@ public class UsuarioDao {
         }
         return lista;
     }
-    public boolean actualizarUsuario(String numEmpleado, String nombre, String apeP, String apeM, String correo) {
-        String sql = "UPDATE usuarios SET nombre=?, apellidoPaterno=?, apellidoMaterno=?, correo=? WHERE NumEmpleado=?";
+    public boolean actualizarUsuario(String numEmpleado, String nombre, String apeP, String apeM, String correo, int permisoRegistro) {
+        String sql = "UPDATE usuarios SET nombre=?, apellidoPaterno=?, apellidoMaterno=?, correo=?, permisoRegistro=? WHERE NumEmpleado=?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ps.setString(2, apeP);
             ps.setString(3, apeM);
             ps.setString(4, correo);
-            ps.setString(5, numEmpleado);
+            ps.setInt(5, permisoRegistro);
+            ps.setString(6, numEmpleado);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,7 +104,7 @@ public class UsuarioDao {
     }
 
     public Usuario autenticar(String correo, String contrasena) {
-        String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo FROM usuarios WHERE correo = ? AND contrasena = ?";
+        String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo, permisoRegistro FROM usuarios WHERE correo = ? AND contrasena = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, correo);
             ps.setString(2, contrasena);
@@ -114,6 +117,7 @@ public class UsuarioDao {
                 usuario.setApellidoPaterno(rs.getString("apellidoPaterno"));
                 usuario.setApellidoMaterno(rs.getString("apellidoMaterno"));
                 usuario.setCorreo(rs.getString("correo"));
+                usuario.setPermisoRegistro(rs.getInt("permisoRegistro"));
                 return usuario;
             }
         }catch (SQLException e) {

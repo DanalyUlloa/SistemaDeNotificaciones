@@ -13,7 +13,7 @@ import  java.sql.Connection;
 import  java.sql.SQLException;
 
 @WebServlet("/Login")
-public class GoogleLoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
     protected void doPost( HttpServletRequest request, HttpServletResponse response) throws IOException {
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");

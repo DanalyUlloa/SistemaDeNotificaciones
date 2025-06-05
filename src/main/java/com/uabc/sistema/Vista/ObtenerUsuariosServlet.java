@@ -29,7 +29,8 @@ public class ObtenerUsuariosServlet extends HttpServlet {
             out.print("{");
             out.print("\"id\":\"" + u.getNumEmpleado() + "\",");
             out.print("\"nombre\":\"" + u.getNombre() + " " + u.getApellidoPaterno() + " " + u.getApellidoMaterno() + "\",");
-            out.print("\"correo\":\"" + u.getCorreo() + "\"");
+            out.print("\"correo\":\"" + u.getCorreo() + "\",");
+            out.print("\"permisoRegistro\":\"" + (u.getPermisoRegistro() == 1 ? "Sí" : "No") + "\"");
             out.print("}");
             if (i < usuarios.size() - 1) out.print(",");
         }

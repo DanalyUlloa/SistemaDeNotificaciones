@@ -18,14 +18,35 @@ public class ActualizarUsuarioServlet extends HttpServlet {
         String nombreCompleto = json.get("nombre").getAsString();
         String correo = json.get("correo").getAsString();
 
-        // Separar nombre completo (esto puede adaptarse mejor)
+        int permisoRegistro = 0;
+        try {
+            if (json.has("permisoRegistro")) {
+                JsonElement el = json.get("permisoRegistro");
+                if (el.isJsonPrimitive()) {
+                    JsonPrimitive prim = el.getAsJsonPrimitive();
+                    if (prim.isBoolean()) {
+                        permisoRegistro = prim.getAsBoolean() ? 1 : 0;
+                    } else if (prim.isNumber()) {
+                        permisoRegistro = prim.getAsInt();
+                    } else if (prim.isString()) {
+                        String val = prim.getAsString();
+                        permisoRegistro = val.equalsIgnoreCase("true") || val.equals("1") ? 1 : 0;
+                    }
+                }
+            }
+            }catch (Exception e) {
+            e.printStackTrace();
+            permisoRegistro = 0;
+        }
+
+        // Separar nombre completo
         String[] partes = nombreCompleto.split(" ", 3);
         String nombre = partes.length > 0 ? partes[0] : "";
         String apellidoPaterno = partes.length > 1 ? partes[1] : "";
         String apellidoMaterno = partes.length > 2 ? partes[2] : "";
 
         UsuarioService service = new UsuarioService();
-        boolean actualizado = service.actualizarUsuario(id, nombre, apellidoPaterno, apellidoMaterno, correo);
+        boolean actualizado = service.actualizarUsuario(id, nombre, apellidoPaterno, apellidoMaterno, correo, permisoRegistro);
 
         if (actualizado) {
             response.setStatus(HttpServletResponse.SC_OK);

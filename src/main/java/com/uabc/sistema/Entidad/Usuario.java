@@ -7,6 +7,7 @@ public class Usuario {
     private String apellidoMaterno;
     private String correo;
     private String contrasena;
+    private int permisoRegistro;
 
     // Getters y setters
     public String getNumEmpleado() {
@@ -49,6 +50,13 @@ public class Usuario {
     }
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public int getPermisoRegistro() {
+        return permisoRegistro;
+    }
+    public void setPermisoRegistro(int permisoRegistro) {
+        this.permisoRegistro = permisoRegistro;
     }
 
 }

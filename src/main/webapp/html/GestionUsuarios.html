@@ -106,7 +106,7 @@
                         <td>${usuario.id}</td>
                         <td contenteditable="false">${usuario.nombre}</td>
                         <td contenteditable="false">${usuario.correo}</td>
-                        <td>${usuario.permisos || 'No'}</td>
+                        <td>${usuario.permisoRegistro === "Sí" ? 'Sí' : 'No'}</td>
                     `;
                     row.onclick = () => seleccionarFila(row);
                     tabla.appendChild(row);

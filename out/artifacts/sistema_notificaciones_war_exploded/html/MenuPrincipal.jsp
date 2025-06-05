@@ -44,6 +44,7 @@
 
       <!-- Barra lateral izquierda -->
       <div class="sidebar">
+        <% if (usuario.getPermisoRegistro() == 1) { %>
         <div class="menu-item" onclick="location.href='GestionUsuarios.html'">
           <div class="icon">
             <img src="../img/usuario.png"
@@ -51,6 +52,7 @@
                  class="icon-img"></div>
           <div class="text">Gestión de Usuarios</div>
         </div>
+        <% } %>
 
         <div class="menu-item" onclick="location.href='GestionNoticias.html'">
           <div class="icon">
