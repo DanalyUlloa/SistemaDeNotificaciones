@@ -178,3 +178,24 @@ body {
     width: 30px;
     margin-right: 5px;
 }
+
+#tablaNoticias {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+#tablaNoticias th {
+    background-color: #005b3c; /* verde UABC */
+    color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+#tablaNoticias td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    color: black;
+}

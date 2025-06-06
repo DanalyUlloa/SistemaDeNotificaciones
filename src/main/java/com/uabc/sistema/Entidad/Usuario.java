@@ -1,7 +1,7 @@
 package com.uabc.sistema.Entidad;
 
 public class Usuario {
-    private String NumEmpleado;
+    private String numEmpleado;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -11,12 +11,12 @@ public class Usuario {
 
     // Getters y setters
     public String getNumEmpleado() {
-        return NumEmpleado;
-    }
-    public void setNumEmpleado(String NumEmpleado) {
-        this.NumEmpleado = NumEmpleado;
+        return numEmpleado;
     }
 
+    public void setNumEmpleado(String numEmpleado) {
+        this.numEmpleado = numEmpleado;
+    }
     public String getNombre() {
         return nombre;
     }

@@ -2,9 +2,9 @@ package com.uabc.sistema.Persistencia;
 
 import com.uabc.sistema.Entidad.Noticia;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NoticiaDao {
     private Connection conexion;
@@ -13,20 +13,46 @@ public class NoticiaDao {
         this.conexion = conexion;
     }
 
+    // Registrar una noticia en la base de datos
     public boolean registrarNoticia(Noticia noticia) {
-        String sql = "INSERT INTO noticia (Titulo, Autor, Contenido, Fecha, Categoria) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO noticia (Titulo, Contenido, Fecha, autor_id, categoria_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, noticia.getTitulo());
-            ps.setString(2, noticia.getAutor());
-            ps.setString(3, noticia.getContenido());
-            ps.setString(4, noticia.getFecha());
-            ps.setString(5, noticia.getCategoria());
-
+            ps.setString(2, noticia.getContenido());
+            ps.setString(3, noticia.getFecha());
+            ps.setString(4, noticia.getAutorId());         // autor_id (NumEmpleado)
+            ps.setInt(5, noticia.getCategoriaId());        // ID de la categoría
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // Método para obtener todas las noticias
+    public List<Noticia> obtenerTodas() throws SQLException {
+        String sql = "SELECT n.NoticiaID, n.Titulo, n.Contenido, n.Fecha, " +
+                "u.nombre AS autor, c.Nombre AS categoria " +
+                "FROM noticia n " +
+                "JOIN usuarios u ON n.autor_id = u.NumEmpleado " +
+                "JOIN categoria c ON n.categoria_id = c.CategoriaID";
+
+        List<Noticia> lista = new ArrayList<>();
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Noticia noticia = new Noticia(
+                        rs.getString("Titulo"),
+                        rs.getString("Contenido"),
+                        rs.getString("Fecha"),
+                        rs.getString("autor"),    // nombre del autor
+                        rs.getString("categoria") // nombre de la categoría
+                );
+                lista.add(noticia);
+            }
+        }
+        return lista;
     }
 }

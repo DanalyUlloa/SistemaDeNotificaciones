@@ -11,21 +11,21 @@
         }
     </style>
 </head>
-<body>
-<h1>Iniciar sesión</h1>
+    <body>
+        <h1>Iniciar sesión</h1>
 
-<?php
-    if (isset($_SESSION['user'])) {
-        // Si ya hay sesión iniciada, mostrar un mensaje
-        echo "Bienvenido, " . $_SESSION['user']['name'];
-    } else {
-        // Si no, mostrar el formulario de login
-        echo '<form method="POST" action="procesarLogin.html">
-<input type="email" name="email" placeholder="Correo" required />
-<input type="password" name="password" placeholder="Contraseña" required />
-<button type="submit">Iniciar sesión</button>
-</form>';
-}
-?>
-</body>
+        <?php
+            if (isset($_SESSION['user'])) {
+                // Si ya hay sesión iniciada, mostrar un mensaje
+                echo "Bienvenido, " . $_SESSION['user']['name'];
+            } else {
+                // Si no, mostrar el formulario de login
+                echo '<form method="POST" action="procesarLogin.html">
+        <input type="email" name="email" placeholder="Correo" required />
+        <input type="password" name="password" placeholder="Contraseña" required />
+        <button type="submit">Iniciar sesión</button>
+        </form>';
+        }
+        ?>
+    </body>
 </html>
