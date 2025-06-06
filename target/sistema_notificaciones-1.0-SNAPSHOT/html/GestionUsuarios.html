@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="../css/GestionUsuarios.css">
+    <style>
+        .seleccionada {
+            background-color: #ffeeba !important;
+        }
+    </style>
+</head>
+<body>
+<div class="pantalla">
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo">
+        <a href="MenuPrincipal.jsp">Volver al Menu principal</a>
+        <a href="GestionNoticias.html">Ir a Gestión de Noticias</a>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="contenido">
+        <h1 class="titulo">Gestión Usuarios</h1>
+        <h2 class="subtitulo">Bienvenido a la gestión de usuarios</h2>
+
+        <!-- Barra de iconos -->
+        <div class="iconos-barra">
+            <button onclick="location.href='RegistroUsuario.html'" title="Agregar usuario">
+                <img src="../img/AgregarUsuario.png" alt="Agregar">
+            </button>
+            <button onclick="activarEdicion()" title="Modificar usuario">
+                <img src="../img/Modificar.png" alt="Modificar">
+            </button>
+            <button onclick="guardarCambios()" title="Guardar cambios">
+                <img src="../img/Guardar.png" alt="Guardar">
+            </button>
+            <button onclick="eliminarSeleccionado()" title="Eliminar usuario">
+                <img src="../img/Eliminar.png" alt="Eliminar">
+            </button>
+            <button title="Ordenar alfabéticamente" onclick="ordenarPorNombre()">
+                <img src="../img/Ordenar.png" alt="Ordenar">
+            </button>
+            <button title="Buscar" onclick="document.getElementById('inputBusqueda').focus()">
+                <img src="../img/Busqueda.png" alt="Buscar">
+            </button>
+        </div>
+
+        <!-- Campo de búsqueda -->
+        <div style="margin: 10px 0;">
+            <input type="text" id="inputBusqueda" placeholder="Buscar por nombre o correo" style="padding: 8px; width: 300px;">
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Permisos</th>
+            </tr>
+            </thead>
+            <tbody id="tablaUsuarios">
+            <!-- Se llena automáticamente con usuarios -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botón de ayuda -->
+    <div class="ayuda" onclick="location.href='Ayuda.html'">
+        <img src="../img/ayuda.png" alt="Ayuda">
+    </div>
+</div>
+
+<!-- Script de funcionalidad -->
+<script>
+    let tabla;
+    let filasEditable = [];
+    let filaSeleccionada = null;
+
+    window.onload = function () {
+        tabla = document.querySelector("#tablaUsuarios");
+        cargarUsuarios();
+
+        document.getElementById("inputBusqueda").addEventListener("input", function () {
+            const texto = this.value.toLowerCase();
+            const filas = document.querySelectorAll("#tablaUsuarios tr");
+
+            filas.forEach(fila => {
+                const nombre = fila.children[1].innerText.toLowerCase();
+                const correo = fila.children[2].innerText.toLowerCase();
+                fila.style.display = (nombre.includes(texto) || correo.includes(texto)) ? "" : "none";
+            });
+        });
+    };
+
+    function cargarUsuarios() {
+        fetch('/SistemaDeNotificaciones/obtenerUsuarios')
+                .then(response => response.json())
+            .then(data => {
+                tabla.innerHTML = "";
+                data.forEach(usuario => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${usuario.id}</td>
+                        <td contenteditable="false">${usuario.nombre}</td>
+                        <td contenteditable="false">${usuario.correo}</td>
+
+                        <td>
+                        <select name="permisoRegistro">
+                            <option value="1" ${usuario.permisoRegistro === "Si" ? 'selected' : ''}>Sí</option>
+                            <option value="0" ${usuario.permisoRegistro === "No" ? 'selected' : ''}>No</option>
+                        </select>
+                        </td>
+                    `;
+                    row.onclick = () => seleccionarFila(row);
+                    tabla.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error cargando usuarios:', error));
+    }
+
+    function seleccionarFila(fila) {
+        if (filaSeleccionada) filaSeleccionada.classList.remove("seleccionada");
+        filaSeleccionada = fila;
+        fila.classList.add("seleccionada");
+    }
+
+    function activarEdicion() {
+        filasEditable = document.querySelectorAll("#tablaUsuarios tr");
+        filasEditable.forEach(fila => {
+            fila.children[1].contentEditable = true;
+            fila.children[2].contentEditable = true;
+            fila.classList.add("editable");
+        });
+        alert("✏️ Edición activada. No olvides presionar 'Guardar'.");
+    }
+
+    function guardarCambios() {
+        filasEditable.forEach(fila => {
+            const id = fila.children[0].innerText.trim();
+            const nuevoNombre = fila.children[1].innerText.trim();
+            const nuevoCorreo = fila.children[2].innerText.trim();
+            const permiso = fila.querySelector('select[name="permisoRegistro"]').value;
+
+            fetch('/SistemaDeNotificaciones/actualizarUsuario', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: id,
+                    nombre: nuevoNombre,
+                    correo: nuevoCorreo,
+                    permisoRegistro: permiso
+                })
+            }).then(response => {
+                if (response.ok) {
+                    fila.children[1].contentEditable = false;
+                    fila.children[2].contentEditable = false;
+                    fila.classList.remove("editable");
+                } else {
+                    alert(`❌ Error al guardar cambios del ID: ${id}`);
+                }
+            }).catch(err => {
+                alert("❌ Error de red al guardar cambios");
+                console.error(err);
+            });
+        });
+
+        alert("✅ Cambios guardados correctamente.");
+    }
+
+    function ordenarPorNombre() {
+        const filas = Array.from(document.querySelectorAll("#tablaUsuarios tr"));
+        const ordenadas = filas.sort((a, b) => {
+            const nombreA = a.children[1].innerText.toLowerCase();
+            const nombreB = b.children[1].innerText.toLowerCase();
+            return nombreA.localeCompare(nombreB);
+        });
+
+        tabla.innerHTML = "";
+        ordenadas.forEach(f => tabla.appendChild(f));
+    }
+
+    function eliminarSeleccionado() {
+        if (!filaSeleccionada) {
+            alert("Selecciona una fila para eliminar.");
+            return;
+        }
+
+        const id = filaSeleccionada.children[0].innerText.trim();
+        if (!confirm(`¿Seguro que deseas eliminar al usuario con ID ${id}?`)) return;
+
+        fetch('/SistemaDeNotificaciones/eliminarUsuario?id=' + encodeURIComponent(id), {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                filaSeleccionada.remove();
+                filaSeleccionada = null;
+                alert("✅ Usuario eliminado.");
+            } else {
+                alert("❌ Error al eliminar.");
+            }
+        }).catch(err => {
+            alert("❌ Error de red al eliminar.");
+            console.error(err);
+        });
+    }
+</script>
+</body>
+</html>

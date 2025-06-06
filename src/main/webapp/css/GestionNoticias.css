@@ -12,7 +12,6 @@ body {
 .sidebar {
     background-color: #005b3c;
     padding: 20px;
-    height: 100vh;
     width: 250px;
     display: flex;
     flex-direction: column;
@@ -20,24 +19,15 @@ body {
     align-items: flex-start;
 }
 
-.sidebar .logo {
-    width: 100px;
-    margin-bottom: 30px;
-    align-items: center;
-}
-
-.sidebar a {
-    color: white;
-    text-decoration: none;
-    margin: 15px 0;
+.logo-container {
+    width: 100%;
     display: flex;
-    align-items: center;
-    font-weight: bold;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
-.sidebar .icono-lateral {
-    width: 30px;
-    margin-right: 10px;
+.logo {
+    width: 120px;
 }
 
 .menu-item {
@@ -47,6 +37,7 @@ body {
     color: white;
     font-weight: bold;
     gap: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .menu-item:hover {
@@ -54,11 +45,6 @@ body {
     border-radius: 10px;
     padding: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.menu-text {
-    text-align: left;
 }
 
 .circle-icon {
@@ -77,23 +63,11 @@ body {
     object-fit: contain;
 }
 
-.logo-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    align-items: center;
-}
-
-.logo {
-    width: 120px;
-    align-items: center;
-}
-
 .contenido {
     flex: 1;
     padding: 30px;
     position: relative;
+    overflow-y: auto;
 }
 
 .titulo {
@@ -123,23 +97,36 @@ body {
     height: 24px;
 }
 
-.tabla {
+/* Tabla noticias */
+#tablaNoticias {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: white;
 }
 
-.tabla th, .tabla td {
-    border: 1px solid #ccc;
+#tablaNoticias th {
+    background-color: #005b3c;
+    color: white;
     padding: 10px;
+    border: 1px solid #ccc;
     text-align: center;
 }
 
-.tabla thead {
-    background-color: #00552E;
-    color: white;
+#tablaNoticias td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    color: black;
+    text-align: center;
 }
 
+.seleccionada {
+    background-color: #ffe48f !important;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* Botones principales */
 .botones {
     display: flex;
     justify-content: flex-end;
@@ -165,6 +152,7 @@ body {
     cursor: pointer;
 }
 
+/* Ayuda */
 .ayuda {
     position: absolute;
     bottom: 15px;
@@ -179,23 +167,44 @@ body {
     margin-right: 5px;
 }
 
-#tablaNoticias {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: white;
+/* Popup estilo (por si decides moverlo aquí) */
+.popup {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
-#tablaNoticias th {
-    background-color: #005b3c; /* verde UABC */
-    color: white;
-    padding: 10px;
-    border: 1px solid #ccc;
+.popup-contenido {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
     text-align: center;
+    animation: aparecer 0.3s ease;
 }
 
-#tablaNoticias td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    color: black;
+.popup-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-cerrar {
+    margin-top: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }

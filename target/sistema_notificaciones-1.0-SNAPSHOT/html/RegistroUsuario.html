@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Usuarios</title>
+    <link rel="stylesheet" href="../css/RegistroUsuario.css">
+</head>
+<body>
+<div class="pantalla">
+    <button class="btn-regresar" onclick="location.href='GestionUsuarios.html'">⮌</button>
+
+    <div class="contenedor-formulario">
+        <h2 class="titulo-principal">Registrar Usuario</h2>
+        <form id="formRegistro" action="/SistemaDeNotificaciones/registrarUsuario" method="post" onsubmit="return mostrarConfirmacion(event)">
+            <div class="formulario-dos-columnas">
+                <!-- Columna Izquierda -->
+                <div class="columna izquierda">
+                    <input type="text" name="nombre" placeholder="Nombre" required>
+                    <input type="text" name="apellidoPaterno" placeholder="Apellido Paterno" required>
+                    <input type="text" name="apellidoMaterno" placeholder="Apellido Materno" required>
+                    <input type="text" name="NumEmpleado" placeholder="Número de empleado" required>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="permisoRegistro">
+                        ¿Habilitar permisos para registrar usuarios?
+                    </label>
+                </div>
+
+                <!-- Columna Derecha -->
+                <div class="columna derecha">
+                    <input type="email" name="correo" placeholder="Correo institucional" required>
+                    <input type="password" name="contrasena" placeholder="Contraseña (mínimo 5 caracteres)" required>
+                    <button type="submit" class="btn-registrar">Registrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<div id="popupConfirmacion" class="popup">
+    <div class="popup-contenido">
+        <p class="popup-titulo">¿Desea confirmar el registro?</p>
+        <div class="popup-botones">
+            <button class="btn-aceptar" onclick="confirmarRegistro()">Aceptar</button>
+            <button class="btn-cancelar" onclick="cerrarPopup()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function mostrarConfirmacion(event) {
+        event.preventDefault();
+
+        document.querySelectorAll('.mensaje-error').forEach(e => e.remove());
+        document.querySelectorAll('.error').forEach(e => e.classList.remove('error'));
+
+        const correo = document.querySelector('input[name="correo"]');
+        const contrasena = document.querySelector('input[name="contrasena"]');
+
+        let valid = true;
+
+        const correoRegex = /^[a-zA-Z0-9._%+-]+@uabc\.edu\.mx$/;
+        if (!correoRegex.test(correo.value)) {
+            mostrarError(correo, "Debe ser un correo @uabc.edu.mx");
+            valid = false;
+        }
+
+        if (contrasena.value.length < 5) {
+            mostrarError(contrasena, "La contraseña debe tener al menos 5 caracteres");
+            valid = false;
+        }
+
+        if (valid) {
+            document.getElementById("popupConfirmacion").style.display = "flex";
+        }
+    }
+
+    function mostrarError(input, mensaje) {
+        const error = document.createElement('div');
+        error.className = 'mensaje-error';
+        error.textContent = mensaje;
+        input.classList.add('error');
+        input.parentNode.appendChild(error);
+    }
+
+    function cerrarPopup() {
+        document.getElementById("popupConfirmacion").style.display = "none";
+    }
+
+    function confirmarRegistro() {
+        document.getElementById("popupConfirmacion").style.display = "none";
+        document.getElementById("formRegistro").submit();
+    }
+
+    window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get("error") === "duplicado") {
+            alert("❌ El correo o número de empleado ya está registrado.");
+        }
+
+        if (params.get("exito") === "true") {
+            const contenedor = document.querySelector(".contenedor-formulario");
+
+            const mensaje = document.createElement("div");
+            mensaje.style.marginTop = "20px";
+            mensaje.style.background = "#d4edda";
+            mensaje.style.color = "#155724";
+            mensaje.style.padding = "15px";
+            mensaje.style.borderRadius = "10px";
+            mensaje.style.textAlign = "center";
+            mensaje.style.fontWeight = "bold";
+            mensaje.innerText = "✅ Usuario registrado con éxito.";
+
+            const boton = document.createElement("button");
+            boton.innerText = "Ir a Gestión de Usuarios";
+            boton.style.marginTop = "10px";
+            boton.style.padding = "10px 20px";
+            boton.style.borderRadius = "6px";
+            boton.style.border = "none";
+            boton.style.cursor = "pointer";
+            boton.style.backgroundColor = "#00552E";
+            boton.style.color = "white";
+            boton.onclick = function () {
+                location.href = "GestionUsuarios.html";
+            };
+
+            contenedor.appendChild(mensaje);
+            contenedor.appendChild(boton);
+        }
+    }
+        </script>
+        </div>
+    </body>
+</html>
