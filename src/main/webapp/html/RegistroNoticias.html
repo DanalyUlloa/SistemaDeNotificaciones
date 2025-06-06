@@ -16,7 +16,7 @@
     <div class="contenido">
         <h1 class="titulo">Registrar Noticia</h1>
         <div class="form-container">
-            <form action="registrarNoticia" method="POST">
+            <form action="/registrarNoticia" method="POST">
                 <div class="form-group">
                     <label for="titulo">Título:</label>
                     <input type="text" id="titulo" name="titulo" required>
@@ -42,8 +42,9 @@
                         <option value="Académico">Académico</option>
                     </select>
                 </div>
-                <button type="submit">Registrar</button>
+                <button type="submit" name="submit">Registrar</button>
             </form>
+            </div>
         </div>
     </div>
 </div>
