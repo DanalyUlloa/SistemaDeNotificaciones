@@ -1,0 +1,189 @@
+/* Fondo general gris claro */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d9d9d9;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor principal centrado vertical y horizontal */
+.pantalla {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Título fuera del recuadro, centrado y en color neutro */
+.titulo-principal {
+    color: #333;
+    font-size: 36px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Botón regresar – esquina superior izquierda de la pantalla */
+.btn-regresar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #2e2e2e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Botón ayuda – esquina inferior derecha de la pantalla */
+.btn-ayuda {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #2e2e2e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Recuadro con fondo verde institucional, más grande */
+.contenedor-formulario {
+    background-color: #004d2c;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 950px;
+    margin: auto;
+}
+
+.titulo-principal {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2em;
+    color: #fff;
+}
+
+.formulario-dos-columnas {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.columna {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.btn-registrar {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #FFD700;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+/* Popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-contenido {
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    color: black;
+    width: 450px;
+}
+
+.popup-titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.popup-botones {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.popup-botones button {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Aceptar verde */
+.btn-aceptar {
+    background-color: #00552E;
+    color: white;
+}
+
+/* Cancelar rojo */
+.btn-cancelar {
+    background-color: #C62828;
+    color: white;
+
+    .mensaje-error {
+        color: #FFD700;
+        font-size: 14px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+
+    input.error {
+        border: 2px solid #FFD700;
+        background-color: #ffeeba;
+    }
+
+}

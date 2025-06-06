@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <!-- Hace que la página sea responsiva en dispositivos móviles -->
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>
+        Sistema de Notificaciones
+    </title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <!-- Importa la fuente Roboto desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+    <body class="bg-[#d7dbd7] min-h-screen flex items-center justify-center relative">
+
+    <!-- Imagen de fondo de un cimarron -->
+    <img alt="Fondo de cimarron detras del login"
+         class="absolute inset-0 w-full h-full object-contain opacity-20 pointer-events-none select-none"
+         height="600" src="../img/cimaGreenMobile%201.png"
+         width="600"/>
+
+    <div class="relative bg-[#006837] rounded-2xl shadow-lg p-8 w-[320px] sm:w-[330px] text-white flex flex-col items-center">
+
+        <!-- Logo UABC en la parte superior -->
+        <img alt="Logo uabc"
+             class="mb-6"
+             height="60"
+             src="../img/UABC.png"
+             width="120"/>
+
+        <h2 class="font-bold text-center mb-6 text-sm">
+            Inicio de Sesión
+        </h2>
+        <form class="w-full space-y-4" action="/SistemaDeNotificaciones/Login" method="post">
+            <div class="flex flex-col text-[10px]">
+                <label class="mb-1" for="email">
+                    Correo
+                </label>
+                <input name="correo" autocomplete="email" class="rounded-md px-3 py-2 text-black text-xs" id="email" type="email"/>
+            </div>
+            <div class="flex flex-col text-[10px]">
+                <label class="mb-1" for="password">
+                    Contraseña
+                </label>
+                <input name="contrasena" autocomplete="current-password" class="rounded-md px-3 py-2 text-black text-xs" id="password" type="password"/>
+            </div>
+
+            <button class="bg-[#d7dbd7] text-black text-xs rounded-md py-1 px-4 mx-auto block shadow-sm hover:brightness-90 transition"
+                    type="submit">
+                Iniciar Sesion
+            </button>
+        </form>
+    </div>
+
+    <script>
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("error") === "credenciales") {
+            const toast = document.createElement("div");
+            toast.className = "fixed bottom-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg flex flex-col items-start max-w-xs z-50 animate-fade-in";
+            const title = document.createElement("strong");
+            title.className = "font-bold";
+            title.textContent = "Error";
+            const message = document.createElement("span");
+            message.className = "text-sm";
+            message.textContent = "Correo o contraseña no válidos.";
+            toast.appendChild(title);
+            toast.appendChild(message);
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+    </script>
+    </body>
+</html>

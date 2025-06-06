@@ -11,6 +11,10 @@ import com.google.gson.*;
 @WebServlet("/actualizarUsuario")
 public class ActualizarUsuarioServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         BufferedReader reader = request.getReader();
         JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
 

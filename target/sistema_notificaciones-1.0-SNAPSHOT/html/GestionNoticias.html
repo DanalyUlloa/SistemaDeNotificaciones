@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Noticias</title>
+    <link rel="stylesheet" href="../css/GestionNoticias.css">
+    <style>
+        .popup {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .popup-contenido {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .popup-titulo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn-cerrar {
+            margin-top: 10px;
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .seleccionada {
+            background-color: #ffe082;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            const tienePermiso = sessionStorage.getItem("permisoRegistro") === "true";
+            const gestionUsuariosBtn = document.getElementById("btn-usuarios");
+            if (!tienePermiso && gestionUsuariosBtn) {
+                gestionUsuariosBtn.style.display = "none";
+            }
+        };
+    </script>
+</head>
+<body>
+<div class="pantalla">
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo">
+        </div>
+
+        <div class="menu-item" onclick="location.href='MenuPrincipal.jsp'">
+            <div class="circle-icon">
+                <img src="../img/MenuPrincipal.png" class="icono-lateral" alt="Menú Principal">
+            </div>
+            <div class="text">Menú Principal</div>
+        </div>
+
+        <div class="menu-item" id="btn-usuarios" onclick="location.href='GestionUsuarios.html'">
+            <div class="circle-icon">
+                <img src="../img/usuario.png" class="icono-lateral" alt="Gestión de Usuarios">
+            </div>
+            <div class="text">Gestión de Usuarios</div>
+        </div>
+    </div>
+
+    <!-- Principal -->
+    <div class="contenido">
+        <h1 class="titulo">Bienvenido a la gestión de Noticias</h1>
+
+        <!-- Íconos alineados a la derecha -->
+        <div class="barra-iconos">
+            <button title="Modificar"><img src="../img/Modificar.png" alt="Modificar"></button>
+            <button title="Eliminar"><img src="../img/Eliminar.png" alt="Eliminar"></button>
+            <button title="Ordenar"><img src="../img/Ordenar.png" alt="Ordenar"></button>
+            <button title="Buscar"><img src="../img/Busqueda.png" alt="Buscar"></button>
+        </div>
+
+        <h2>Noticias Registradas</h2>
+        <table id="tablaNoticias" border="1">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Título</th>
+                <th>Contenido</th>
+                <th>Fecha</th>
+                <th>Autor</th>
+                <th>Categoría</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Noticias se cargarán aquí -->
+            </tbody>
+        </table>
+
+        <!-- Botones -->
+        <div class="botones">
+            <button class="publicar">Publicar Noticia</button>
+            <button class="crear" onclick="location.href='RegistroNoticias.html'">Crear Noticia</button>
+        </div>
+    </div>
+
+    <!-- Ayuda -->
+    <div class="ayuda" onclick="location.href='Ayuda.html'">
+        <img src="../img/ayuda.png" alt="Ayuda">
+        <span>Ayuda</span>
+    </div>
+</div>
+
+<!-- Modal de éxito -->
+<div id="popupCorreoExito" class="popup" style="display: none;">
+    <div class="popup-contenido">
+        <p class="popup-titulo">📨 Noticia enviada por correo exitosamente</p>
+        <button class="btn-cerrar" onclick="cerrarPopupCorreo()">✖</button>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    let noticiaSeleccionada = null;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("../obtenerNoticias")
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector("#tablaNoticias tbody");
+                tbody.innerHTML = "";
+
+                data.forEach((noticia, index) => {
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${noticia.titulo}</td>
+                        <td>${noticia.contenido}</td>
+                        <td>${noticia.fecha}</td>
+                        <td>${noticia.autor}</td>
+                        <td>${noticia.categoria}</td>
+                    `;
+
+                    fila.addEventListener("click", function () {
+                        document.querySelectorAll("#tablaNoticias tbody tr").forEach(f => f.classList.remove("seleccionada"));
+                        fila.classList.add("seleccionada");
+                        noticiaSeleccionada = noticia;
+                    });
+
+                    tbody.appendChild(fila);
+                });
+            });
+
+        document.querySelector(".publicar").addEventListener("click", function () {
+            if (!noticiaSeleccionada) {
+                alert("⚠️ Por favor, selecciona una noticia primero.");
+                return;
+            }
+
+            const confirmar = confirm(`¿Deseas publicar esta noticia?\n\nTítulo: ${noticiaSeleccionada.titulo}`);
+            if (confirmar) {
+                fetch("/SistemaDeNotificaciones/publicarNoticia", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(noticiaSeleccionada)
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Fallo al publicar");
+                        return response.text();
+                    })
+                    .then(() => {
+                        document.getElementById("popupCorreoExito").style.display = "flex";
+                    })
+                    .catch(error => {
+                        console.error("❌ Error:", error);
+                        alert("❌ Hubo un problema al enviar la noticia por correo.");
+                    });
+            }
+        });
+    });
+
+    function cerrarPopupCorreo() {
+        document.getElementById("popupCorreoExito").style.display = "none";
+    }
+</script>
+</body>
+</html>
