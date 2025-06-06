@@ -55,7 +55,6 @@ public class UsuarioDao {
         }
     }
 
-    // Método para obtener todos los usuarios
     public List<Usuario> obtenerTodos() {
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT NumEmpleado, nombre, apellidoPaterno, apellidoMaterno, correo, permisoRegistro FROM usuarios";

@@ -52,8 +52,8 @@ public class PublicarNoticiaServlet extends HttpServlet {
     }
 
     private void enviarCorreo(String destino, String titulo, String contenido) throws MessagingException {
-        final String remitente = "alberto.alapisco@uabc.edu.mx"; // Cambia esto
-        final String contrasena = "sybe ltho gdkm mtqs";          // Contraseña de aplicación (NO uses tu contraseña personal)
+        final String remitente = "alberto.alapisco@uabc.edu.mx";
+        final String contrasena = "sybe ltho gdkm mtqs";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

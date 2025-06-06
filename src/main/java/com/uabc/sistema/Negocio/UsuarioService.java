@@ -31,7 +31,6 @@ public class UsuarioService {
         }
     }
 
-    // ✅ Nuevo método para obtener todos los usuarios
     public List<Usuario> obtenerTodos() {
         try (Connection conexion = db.conectar()) {
             UsuarioDao dao = new UsuarioDao(conexion);

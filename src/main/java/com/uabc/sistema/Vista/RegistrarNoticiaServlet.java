@@ -26,7 +26,6 @@ public class RegistrarNoticiaServlet extends HttpServlet {
             boolean exito = new NoticiaService().registrarNoticia(noticia);
 
             if (exito) {
-                // ✅ Redirige bien usando el contexto
                 response.sendRedirect(request.getContextPath() + "/html/GestionNoticias.html?exito=true");
             } else {
                 response.sendRedirect(request.getContextPath() + "/html/RegistroNoticias.html?error=true");

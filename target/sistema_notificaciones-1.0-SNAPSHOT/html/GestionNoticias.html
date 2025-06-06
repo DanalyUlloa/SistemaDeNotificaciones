@@ -5,6 +5,15 @@
     <title>Gestión de Noticias</title>
     <link rel="stylesheet" href="../css/GestionNoticias.css">
     <style>
+        #inputBusqueda {
+            padding: 10px;
+            width: 320px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 15px 0;
+        }
+
         .popup {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -44,16 +53,6 @@
             background-color: #ffe082;
         }
     </style>
-
-    <script>
-        window.onload = function () {
-            const tienePermiso = sessionStorage.getItem("permisoRegistro") === "true";
-            const gestionUsuariosBtn = document.getElementById("btn-usuarios");
-            if (!tienePermiso && gestionUsuariosBtn) {
-                gestionUsuariosBtn.style.display = "none";
-            }
-        };
-    </script>
 </head>
 <body>
 <div class="pantalla">
@@ -62,14 +61,12 @@
         <div class="logo-container">
             <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo">
         </div>
-
         <div class="menu-item" onclick="location.href='MenuPrincipal.jsp'">
             <div class="circle-icon">
                 <img src="../img/MenuPrincipal.png" class="icono-lateral" alt="Menú Principal">
             </div>
             <div class="text">Menú Principal</div>
         </div>
-
         <div class="menu-item" id="btn-usuarios" onclick="location.href='GestionUsuarios.html'">
             <div class="circle-icon">
                 <img src="../img/usuario.png" class="icono-lateral" alt="Gestión de Usuarios">
@@ -84,11 +81,14 @@
 
         <!-- Íconos alineados a la derecha -->
         <div class="barra-iconos">
-            <button title="Modificar"><img src="../img/Modificar.png" alt="Modificar"></button>
-            <button title="Eliminar"><img src="../img/Eliminar.png" alt="Eliminar"></button>
-            <button title="Ordenar"><img src="../img/Ordenar.png" alt="Ordenar"></button>
-            <button title="Buscar"><img src="../img/Busqueda.png" alt="Buscar"></button>
+            <button title="Modificar" onclick="modificarNoticia()"><img src="../img/Modificar.png" alt="Modificar"></button>
+            <button title="Eliminar" onclick="eliminarNoticia()"><img src="../img/Eliminar.png" alt="Eliminar"></button>
+            <button title="Ordenar" onclick="ordenarPorTitulo()"><img src="../img/Ordenar.png" alt="Ordenar"></button>
+            <button title="Buscar" onclick="document.getElementById('inputBusqueda').focus()"><img src="../img/Busqueda.png" alt="Buscar"></button>
         </div>
+
+        <!-- Campo de búsqueda -->
+        <input type="text" id="inputBusqueda" placeholder="Buscar por título, contenido o autor">
 
         <h2>Noticias Registradas</h2>
         <table id="tablaNoticias" border="1">
@@ -102,9 +102,7 @@
                 <th>Categoría</th>
             </tr>
             </thead>
-            <tbody>
-            <!-- Noticias se cargarán aquí -->
-            </tbody>
+            <tbody></tbody>
         </table>
 
         <!-- Botones -->
@@ -129,12 +127,11 @@
     </div>
 </div>
 
-<!-- Scripts -->
 <script>
     let noticiaSeleccionada = null;
 
     document.addEventListener("DOMContentLoaded", function () {
-        fetch("../obtenerNoticias")
+        fetch("/SistemaDeNotificaciones/obtenerNoticias")
             .then(res => res.json())
             .then(data => {
                 const tbody = document.querySelector("#tablaNoticias tbody");
@@ -151,7 +148,7 @@
                         <td>${noticia.categoria}</td>
                     `;
 
-                    fila.addEventListener("click", function () {
+                    fila.addEventListener("click", () => {
                         document.querySelectorAll("#tablaNoticias tbody tr").forEach(f => f.classList.remove("seleccionada"));
                         fila.classList.add("seleccionada");
                         noticiaSeleccionada = noticia;
@@ -159,11 +156,23 @@
 
                     tbody.appendChild(fila);
                 });
+
+                const inputBusqueda = document.getElementById("inputBusqueda");
+                inputBusqueda.addEventListener("input", function () {
+                    const texto = this.value.toLowerCase();
+                    document.querySelectorAll("#tablaNoticias tbody tr").forEach(fila => {
+                        const titulo = fila.children[1].innerText.toLowerCase();
+                        const contenido = fila.children[2].innerText.toLowerCase();
+                        const autor = fila.children[4].innerText.toLowerCase();
+                        const coincide = titulo.includes(texto) || contenido.includes(texto) || autor.includes(texto);
+                        fila.style.display = coincide ? "" : "none";
+                    });
+                });
             });
 
         document.querySelector(".publicar").addEventListener("click", function () {
             if (!noticiaSeleccionada) {
-                alert("⚠️ Por favor, selecciona una noticia primero.");
+                alert("⚠️ Por favor, selecciona una noticia.");
                 return;
             }
 
@@ -171,21 +180,16 @@
             if (confirmar) {
                 fetch("/SistemaDeNotificaciones/publicarNoticia", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(noticiaSeleccionada)
                 })
-                    .then(response => {
-                        if (!response.ok) throw new Error("Fallo al publicar");
-                        return response.text();
-                    })
-                    .then(() => {
+                    .then(res => {
+                        if (!res.ok) throw new Error("Error");
                         document.getElementById("popupCorreoExito").style.display = "flex";
                     })
-                    .catch(error => {
-                        console.error("❌ Error:", error);
-                        alert("❌ Hubo un problema al enviar la noticia por correo.");
+                    .catch(err => {
+                        alert("❌ Error al enviar la noticia.");
+                        console.error(err);
                     });
             }
         });
@@ -193,6 +197,52 @@
 
     function cerrarPopupCorreo() {
         document.getElementById("popupCorreoExito").style.display = "none";
+    }
+
+    function modificarNoticia() {
+        if (!noticiaSeleccionada) {
+            alert("⚠️ Selecciona una noticia para modificar.");
+            return;
+        }
+        sessionStorage.setItem("noticiaEditar", JSON.stringify(noticiaSeleccionada));
+        window.location.href = "RegistroNoticias.html";
+    }
+
+    function eliminarNoticia() {
+        if (!noticiaSeleccionada) {
+            alert("⚠️ Selecciona una noticia para eliminar.");
+            return;
+        }
+
+        if (confirm(`¿Eliminar la noticia "${noticiaSeleccionada.titulo}"?`)) {
+            fetch(`/SistemaDeNotificaciones/eliminarNoticia?id=${noticiaSeleccionada.id}`, {
+                method: "DELETE"
+            })
+                .then(res => {
+                    if (res.ok) {
+                        alert("✅ Noticia eliminada.");
+                        location.reload();
+                    } else {
+                        alert("❌ Error al eliminar.");
+                    }
+                })
+                .catch(err => {
+                    alert("❌ Error de red.");
+                    console.error(err);
+                });
+        }
+    }
+
+    function ordenarPorTitulo() {
+        const filas = Array.from(document.querySelectorAll("#tablaNoticias tbody tr"));
+        const tbody = document.querySelector("#tablaNoticias tbody");
+
+        filas.sort((a, b) => {
+            return a.children[1].innerText.localeCompare(b.children[1].innerText);
+        });
+
+        tbody.innerHTML = "";
+        filas.forEach(f => tbody.appendChild(f));
     }
 </script>
 </body>
