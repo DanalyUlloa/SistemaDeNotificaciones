@@ -30,7 +30,7 @@ public class NoticiaDao {
         }
     }
 
-    // Método para obtener todas las noticias
+    // Obtener todas las noticias incluyendo su ID
     public List<Noticia> obtenerTodas() throws SQLException {
         String sql = "SELECT n.NoticiaID, n.Titulo, n.Contenido, n.Fecha, " +
                 "u.nombre AS autor, c.Nombre AS categoria " +
@@ -47,12 +47,22 @@ public class NoticiaDao {
                         rs.getString("Titulo"),
                         rs.getString("Contenido"),
                         rs.getString("Fecha"),
-                        rs.getString("autor"),    // nombre del autor
-                        rs.getString("categoria") // nombre de la categoría
+                        rs.getString("autor"),
+                        rs.getString("categoria")
                 );
+                noticia.setId(rs.getInt("NoticiaID")); // Asignamos el ID
                 lista.add(noticia);
             }
         }
         return lista;
+    }
+
+    // Eliminar una noticia por ID
+    public boolean eliminarNoticia(int id) throws SQLException {
+        String sql = "DELETE FROM noticia WHERE NoticiaID = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        }
     }
 }
