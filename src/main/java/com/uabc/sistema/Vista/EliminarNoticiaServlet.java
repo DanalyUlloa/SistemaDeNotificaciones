@@ -21,8 +21,9 @@ public class EliminarNoticiaServlet extends HttpServlet {
             response.setContentType("application/json");
             response.getWriter().write("{\"success\": " + eliminado + "}");
         } catch (Exception e) {
+            e.printStackTrace(); // IMPORTANTE: agrega esto para ver errores en consola
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"error\": \"Error al eliminar noticia\"}");
+            response.getWriter().write("{\"success\": false}");
         }
     }
 }

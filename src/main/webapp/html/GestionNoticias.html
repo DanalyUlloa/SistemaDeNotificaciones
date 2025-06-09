@@ -9,135 +9,187 @@
             const tienePermiso = sessionStorage.getItem("permisoRegistro") === "true";
             if (!tienePermiso) {
                 const gestionUsuariosBtn = document.getElementById("btn-usuarios");
-                if (gestionUsuariosBtn) {
-                    gestionUsuariosBtn.style.display = "none";
-                }
+                if (gestionUsuariosBtn) gestionUsuariosBtn.style.display = "none";
             }
         };
     </script>
 </head>
-<body>
-<div class="pantalla">
-    <div class="sidebar">
-        <div class="logo-container">
-            <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo" />
+    <body>
+    <div class="pantalla">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <img src="../img/LogoOficial.png" alt="Logo UABC" class="logo" />
+            </div>
+            <div class="menu-item" onclick="location.href='MenuPrincipal.jsp'">
+                <div class="circle-icon"><img src="../img/MenuPrincipal.png" class="icono-lateral" alt="Menú Principal" /></div>
+                <div class="text">Menú Principal</div>
+            </div>
+            <div class="menu-item" id="btn-usuarios" onclick="location.href='GestionUsuarios.html'">
+                <div class="circle-icon"><img src="../img/usuario.png" class="icono-lateral" alt="Gestión de Usuarios" /></div>
+                <div class="text">Gestión de Usuarios</div>
+            </div>
         </div>
-        <div class="menu-item" onclick="location.href='MenuPrincipal.jsp'">
-            <div class="circle-icon"><img src="../img/MenuPrincipal.png" class="icono-lateral" alt="Menú Principal" /></div>
-            <div class="text">Menú Principal</div>
+
+        <!-- Contenido principal -->
+        <div class="contenido">
+            <h1 class="titulo">Bienvenido a la gestión de Noticias</h1>
+
+            <div class="barra-iconos">
+                <button id="btnModificar" title="Modificar"><img src="../img/Modificar.png" alt="Modificar" /></button>
+                <button id="btnEliminar" title="Eliminar"><img src="../img/Eliminar.png" alt="Eliminar" /></button>
+                <button id="btnOrdenar" title="Ordenar"><img src="../img/Ordenar.png" alt="Ordenar" /></button>
+                <button id="btnBuscar" title="Buscar"><img src="../img/Busqueda.png" alt="Buscar" /></button>
+            </div>
+
+            <h2>Noticias Registradas</h2>
+            <input type="text" id="busqueda" placeholder="Buscar por título..." />
+
+            <table id="tablaNoticias" border="1">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>No.</th>
+                    <th>Título</th>
+                    <th>Contenido</th>
+                    <th>Fecha</th>
+                    <th>Autor</th>
+                    <th>Categoría</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="botones">
+                <button class="publicar">Publicar Noticia</button>
+                <button class="crear" onclick="location.href='RegistroNoticias.html'">Crear Noticia</button>
+            </div>
         </div>
-        <div class="menu-item" id="btn-usuarios" onclick="location.href='GestionUsuarios.html'">
-            <div class="circle-icon"><img src="../img/usuario.png" class="icono-lateral" alt="Gestión de Usuarios" /></div>
-            <div class="text">Gestión de Usuarios</div>
+
+        <!-- Ayuda -->
+        <div class="ayuda" onclick="location.href='Ayuda.html'">
+            <img src="../img/ayuda.png" alt="Ayuda" />
+            <span>Ayuda</span>
         </div>
     </div>
 
-    <div class="contenido">
-        <h1 class="titulo">Bienvenido a la gestión de Noticias</h1>
-        <div class="barra-iconos">
-            <button id="btnModificar" title="Modificar"><img src="../img/Modificar.png" alt="Modificar" /></button>
-            <button id="btnEliminar" title="Eliminar"><img src="../img/Eliminar.png" alt="Eliminar" /></button>
-            <button id="btnOrdenar" title="Ordenar"><img src="../img/Ordenar.png" alt="Ordenar" /></button>
-            <button id="btnBuscar" title="Buscar"><img src="../img/Busqueda.png" alt="Buscar" /></button>
-        </div>
+        <script>
+            let noticias = [];
+            let noticiaSeleccionada = null;
 
-        <h2>Noticias Registradas</h2>
-        <input type="text" id="busqueda" placeholder="Buscar por título..." />
-        <table id="tablaNoticias" border="1">
-            <thead>
-            <tr>
-                <th></th>
-                <th>No.</th>
-                <th>Título</th>
-                <th>Contenido</th>
-                <th>Fecha</th>
-                <th>Autor</th>
-                <th>Categoría</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Obtener noticias
+                fetch("../obtenerNoticias")
+                    .then(res => res.json())
+                    .then(data => {
+                        noticias = data;
+                        mostrarNoticias(data);
+                    })
+                    .catch(() => alert("❌ Error al cargar noticias."));
 
-        <div class="botones">
-            <button class="publicar">Publicar Noticia</button>
-            <button class="crear" onclick="location.href='RegistroNoticias.html'">Crear Noticia</button>
-        </div>
-    </div>
+                // Buscar
+                document.getElementById("btnBuscar").onclick = () => {
+                    const texto = document.getElementById("busqueda").value.toLowerCase();
+                    const filtradas = noticias.filter(n => n.titulo.toLowerCase().includes(texto));
+                    mostrarNoticias(filtradas);
+                };
 
-    <div class="ayuda" onclick="location.href='Ayuda.html'">
-        <img src="../img/ayuda.png" alt="Ayuda" />
-        <span>Ayuda</span>
-    </div>
-</div>
+                // Ordenar alfabéticamente
+                document.getElementById("btnOrdenar").onclick = () => {
+                    const ordenadas = [...noticias].sort((a, b) => a.titulo.localeCompare(b.titulo));
+                    mostrarNoticias(ordenadas);
+                };
 
-<script>
-    let noticias = [];
-
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch("../obtenerNoticias")
-            .then(res => res.json())
-            .then(data => {
-                noticias = data;
-                mostrarNoticias(data);
-            })
-            .catch(() => alert("Error al cargar noticias"));
-
-        document.getElementById("btnOrdenar").onclick = () => {
-            const ordenadas = [...noticias].sort((a, b) => a.titulo.localeCompare(b.titulo));
-            mostrarNoticias(ordenadas);
-        };
-
-        document.getElementById("btnBuscar").onclick = () => {
-            const texto = document.getElementById("busqueda").value.toLowerCase();
-            const filtradas = noticias.filter(n => n.titulo.toLowerCase().includes(texto));
-            mostrarNoticias(filtradas);
-        };
-    });
-
-    function mostrarNoticias(lista) {
-        const tbody = document.querySelector("#tablaNoticias tbody");
-        tbody.innerHTML = "";
-        lista.forEach((noticia, index) => {
-            const fila = document.createElement("tr");
-            fila.innerHTML = `
-                <td><input type="radio" name="seleccionNoticia" value="${noticia.id}"></td>
-                <td>${index + 1}</td>
-                <td>${noticia.titulo}</td>
-                <td>${noticia.contenido}</td>
-                <td>${noticia.fecha}</td>
-                <td>${noticia.autor}</td>
-                <td>${noticia.categoria}</td>
-            `;
-            tbody.appendChild(fila);
-        });
-    }
-
-    document.getElementById("btnEliminar").addEventListener("click", function () {
-        const seleccion = document.querySelector("input[name='seleccionNoticia']:checked");
-        if (!seleccion) {
-            alert("⚠️ Por favor selecciona una noticia para eliminar.");
-            return;
-        }
-
-        const idSeleccionado = seleccion.value;
-        if (confirm("¿Estás seguro que deseas eliminar esta noticia?")) {
-            fetch("../eliminarNoticia", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "id=" + encodeURIComponent(idSeleccionado)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("✅ Noticia eliminada exitosamente.");
-                        location.reload();
-                    } else {
-                        alert("❌ No se pudo eliminar la noticia.");
+                // Modificar
+                document.getElementById("btnModificar").onclick = () => {
+                    if (!noticiaSeleccionada) {
+                        alert("⚠️ Por favor selecciona una noticia para modificar.");
+                        return;
                     }
-                })
-                .catch(() => alert("❌ Error al eliminar la noticia."));
-        }
-    });
-</script>
-</body>
+                    window.location.href = `RegistroNoticias.html?id=${noticiaSeleccionada.id}`;
+                };
+
+                // Eliminar
+                document.getElementById("btnEliminar").onclick = () => {
+                    if (!noticiaSeleccionada) {
+                        alert("⚠️ Por favor selecciona una noticia para eliminar.");
+                        return;
+                    }
+
+                    const confirmar = confirm(`¿Deseas eliminar la noticia "${noticiaSeleccionada.titulo}"?`);
+                    if (!confirmar) return;
+
+                    fetch("../eliminarNoticia", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: "id=" + encodeURIComponent(noticiaSeleccionada.id)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("✅ Noticia eliminada exitosamente.");
+                                location.reload();
+                            } else {
+                                alert("❌ No se pudo eliminar la noticia.");
+                            }
+                        })
+                        .catch(() => alert("❌ Error al eliminar la noticia."));
+                };
+
+                // Publicar noticia por correo
+                document.querySelector(".publicar").addEventListener("click", () => {
+                    if (!noticiaSeleccionada) {
+                        alert("⚠️ Por favor selecciona una noticia para publicar.");
+                        return;
+                    }
+
+                    const confirmar = confirm(`📬 ¿Deseas enviar por correo la noticia "${noticiaSeleccionada.titulo}"?`);
+                    if (!confirmar) return;
+
+                    fetch("../publicarNoticia", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(noticiaSeleccionada)
+                    })
+                        .then(res => {
+                            if (!res.ok) throw new Error();
+                            return res.text();
+                        })
+                        .then(() => {
+                            alert("✅ Noticia enviada por correo exitosamente.");
+                            location.reload();
+                        })
+                        .catch(() => {
+                            alert("❌ Error al enviar la noticia por correo.");
+                        });
+                });
+            });
+
+            // Mostrar noticias en la tabla
+            function mostrarNoticias(lista) {
+                const tbody = document.querySelector("#tablaNoticias tbody");
+                tbody.innerHTML = "";
+                lista.forEach((noticia, index) => {
+                    const fila = document.createElement("tr");
+                    fila.innerHTML = `
+                        <td><input type="radio" name="seleccionNoticia" value="${noticia.id}"></td>
+                        <td>${index + 1}</td>
+                        <td>${noticia.titulo}</td>
+                        <td>${noticia.contenido}</td>
+                        <td>${noticia.fecha}</td>
+                        <td>${noticia.autor}</td>
+                        <td>${noticia.categoria}</td>
+                    `;
+                    fila.addEventListener("click", () => {
+                        document.querySelectorAll("#tablaNoticias tbody tr").forEach(f => f.classList.remove("seleccionada"));
+                        fila.classList.add("seleccionada");
+                        noticiaSeleccionada = noticia;
+                    });
+                    tbody.appendChild(fila);
+                });
+            }
+        </script>
+    </body>
 </html>

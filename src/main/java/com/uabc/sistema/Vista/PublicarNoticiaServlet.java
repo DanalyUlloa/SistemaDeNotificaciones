@@ -19,6 +19,9 @@ import java.util.Properties;
 public class PublicarNoticiaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
         StringBuilder jsonBuffer = new StringBuilder();
         String linea;
         try (BufferedReader reader = req.getReader()) {
@@ -32,18 +35,23 @@ public class PublicarNoticiaServlet extends HttpServlet {
             String titulo = json.getString("titulo");
             String contenido = json.getString("contenido");
 
+            System.out.println("Título recibido: " + titulo);
+            System.out.println("Contenido recibido: " + contenido);
+
             try (Connection conexion = db.conectar()) {
                 UsuarioDao dao = new UsuarioDao(conexion);
                 List<Usuario> usuarios = dao.obtenerTodos();
 
                 for (Usuario usuario : usuarios) {
-                    enviarCorreo(usuario.getCorreo(), titulo, contenido);
+                    if (usuario.getCorreo() != null && !usuario.getCorreo().isEmpty()) {
+                        enviarCorreo(usuario.getCorreo(), titulo, contenido);
+                        System.out.println("Correo enviado a: " + usuario.getCorreo());
+                    }
                 }
 
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("{\"mensaje\":\"Noticia enviada por correo\"}");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -52,8 +60,8 @@ public class PublicarNoticiaServlet extends HttpServlet {
     }
 
     private void enviarCorreo(String destino, String titulo, String contenido) throws MessagingException {
-        final String remitente = "alberto.alapisco@uabc.edu.mx"; // Cambia esto
-        final String contrasena = "sybe ltho gdkm mtqs";          // Contraseña de aplicación (NO uses tu contraseña personal)
+        final String remitente = "alberto.alapisco@uabc.edu.mx";
+        final String contrasena = "sybe ltho gdkm mtqs";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

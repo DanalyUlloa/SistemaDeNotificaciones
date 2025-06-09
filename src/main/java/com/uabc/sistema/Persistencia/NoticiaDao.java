@@ -13,15 +13,15 @@ public class NoticiaDao {
         this.conexion = conexion;
     }
 
-    // Registrar una noticia en la base de datos
+    // Registrar noticia
     public boolean registrarNoticia(Noticia noticia) {
         String sql = "INSERT INTO noticia (Titulo, Contenido, Fecha, autor_id, categoria_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, noticia.getTitulo());
             ps.setString(2, noticia.getContenido());
             ps.setString(3, noticia.getFecha());
-            ps.setString(4, noticia.getAutorId());         // autor_id (NumEmpleado)
-            ps.setInt(5, noticia.getCategoriaId());        // ID de la categoría
+            ps.setString(4, noticia.getAutorId());
+            ps.setInt(5, noticia.getCategoriaId());
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -30,7 +30,7 @@ public class NoticiaDao {
         }
     }
 
-    // Obtener todas las noticias incluyendo su ID
+    // Obtener todas las noticias
     public List<Noticia> obtenerTodas() throws SQLException {
         String sql = "SELECT n.NoticiaID, n.Titulo, n.Contenido, n.Fecha, " +
                 "u.nombre AS autor, c.Nombre AS categoria " +
@@ -50,19 +50,52 @@ public class NoticiaDao {
                         rs.getString("autor"),
                         rs.getString("categoria")
                 );
-                noticia.setId(rs.getInt("NoticiaID")); // Asignamos el ID
+                noticia.setId(rs.getInt("NoticiaID"));
                 lista.add(noticia);
             }
         }
         return lista;
     }
 
-    // Eliminar una noticia por ID
+    // Eliminar noticia por ID
     public boolean eliminarNoticia(int id) throws SQLException {
         String sql = "DELETE FROM noticia WHERE NoticiaID = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         }
+    }
+
+    // Actualizar noticia
+    public boolean actualizarNoticia(int id, String titulo, String contenido, String fecha) throws SQLException {
+        String sql = "UPDATE noticia SET Titulo = ?, Contenido = ?, Fecha = ? WHERE NoticiaID = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, titulo);
+            ps.setString(2, contenido);
+            ps.setString(3, fecha);
+            ps.setInt(4, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    // Buscar una noticia por ID (para precargar al editar)
+    public Noticia buscarPorId(int id) throws SQLException {
+        String sql = "SELECT NoticiaID, Titulo, Contenido, Fecha FROM noticia WHERE NoticiaID = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Noticia noticia = new Noticia(
+                            rs.getString("Titulo"),
+                            rs.getString("Contenido"),
+                            rs.getString("Fecha"),
+                            "", "" // autor y categoría no son necesarios aquí
+                    );
+                    noticia.setId(rs.getInt("NoticiaID"));
+                    return noticia;
+                }
+            }
+        }
+        return null;
     }
 }

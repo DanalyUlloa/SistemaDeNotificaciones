@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+    <title>Editar Noticia</title>
+</head>
+  <body>
+  <h1>Editar Noticia</h1>
+      <form id="formEditar">
+        <input type="hidden" id="id" name="id">
+          <label>Título: <input type="text" id="titulo" name="titulo" required></label><br>
+          <label>Contenido: <textarea id="contenido" name="contenido" required></textarea></label><br>
+          <label>Fecha: <input type="date" id="fecha" name="fecha" required></label><br>
+        <button type="submit">Actualizar</button>
+      </form>
+
+    <script>
+      const id = new URLSearchParams(window.location.search).get("id");
+      if (!id) {
+        alert("ID de noticia no proporcionado.");
+        location.href = "GestionNoticias.html";
+      }
+
+      // Cargar datos actuales
+      fetch(`../buscarNoticia?id=${id}`)
+              .then(res => res.json())
+              .then(data => {
+                document.getElementById("id").value = id;
+                document.getElementById("titulo").value = data.titulo;
+                document.getElementById("contenido").value = data.contenido;
+                document.getElementById("fecha").value = data.fecha;
+              })
+              .catch(() => alert("Error al cargar la noticia"));
+
+      // Actualizar
+      document.getElementById("formEditar").onsubmit = function (e) {
+        e.preventDefault();
+        const formData = new URLSearchParams(new FormData(this)).toString();
+        fetch("../editarNoticia", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData
+        })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.success) {
+                    alert("✅ Noticia actualizada");
+                    location.href = "GestionNoticias.html";
+                  } else {
+                    alert("❌ No se pudo actualizar la noticia");
+                  }
+                })
+                .catch(() => alert("❌ Error al conectar con el servidor"));
+      };
+    </script>
+  </body>
+</html>

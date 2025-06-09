@@ -26,15 +26,15 @@ public class RegistrarNoticiaServlet extends HttpServlet {
             boolean exito = new NoticiaService().registrarNoticia(noticia);
 
             if (exito) {
-                // ✅ Redirige bien usando el contexto
-                response.sendRedirect(request.getContextPath() + "/html/GestionNoticias.html?exito=true");
+                response.sendRedirect("html/GestionNoticias.html?exito=true");
             } else {
-                response.sendRedirect(request.getContextPath() + "/html/RegistroNoticias.html?error=true");
+                response.sendRedirect("html/RegistroNoticias.html?error=true");
             }
 
         } catch (NumberFormatException e) {
+            // Error si no se puede convertir el ID de categoría
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/html/RegistroNoticias.html?error=invalidCategoria");
+            response.sendRedirect("html/RegistroNoticias.html?error=invalidCategoria");
         }
     }
 }

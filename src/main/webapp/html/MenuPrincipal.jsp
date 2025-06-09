@@ -63,7 +63,7 @@
 
     <!-- Contenido principal -->
     <div class="main-content">
-      <div class="notification-box">
+      <div class="notification-box" onclick="location.href='HistorialNotificaciones.html'" style="cursor: pointer;">
         <div class="box-title">Historial de publicaciones</div>
         <div class="box-content">
           <img src="../img/cimarron.png" alt="Cimarrón" class="image">

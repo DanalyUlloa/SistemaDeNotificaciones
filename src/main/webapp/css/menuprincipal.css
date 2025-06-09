@@ -218,3 +218,21 @@ body {
         height: auto;
     }
 }
+
+.box-title {
+    background-color: #ffc107;
+    color: #000;
+    font-weight: bold;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.notification-box:hover .box-title {
+    background-color: #ffca2c;
+}
+
+.box-content .image {
+    height: 200px;
+}

@@ -18,7 +18,7 @@
     <div class="contenido">
         <h1 class="titulo">Registrar Noticia</h1>
         <div class="form-container">
-            <form id="formNoticia" action="/SistemaDeNotificaciones/registrarNoticia" method="POST" onsubmit="return confirmarRegistro(event)">
+            <form action="../registrarNoticia" method="POST" onsubmit="return confirmarRegistro(event)">
                 <div class="form-group">
                     <label for="titulo">Título:</label>
                     <input type="text" id="titulo" name="titulo" required />
@@ -44,6 +44,7 @@
                         <option value="3">Actividades Deportivas</option>
                         <option value="4">Comunicados Oficiales</option>
                     </select>
+
                 </div>
                 <button type="submit">Registrar</button>
             </form>
@@ -71,30 +72,25 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Establecer fecha mínima para hoy
+    window.onload = function () {
         const fechaInput = document.getElementById("fecha");
         const hoy = new Date().toISOString().split("T")[0];
         fechaInput.min = hoy;
 
-        // Cargar autor desde sessionStorage
         const autorInput = document.getElementById("autor");
         const numEmpleado = sessionStorage.getItem("numEmpleado");
         if (autorInput && numEmpleado) {
             autorInput.value = numEmpleado;
-        } else {
-            console.warn("⚠️ numEmpleado no está en sessionStorage. ¿El usuario inició sesión?");
         }
 
-        // Mostrar popup de éxito si se redirigió con ?exito=true
         const params = new URLSearchParams(window.location.search);
         if (params.get("exito") === "true") {
             document.getElementById("popupExito").style.display = "flex";
         }
-    });
+    };
 
     function confirmarRegistro(event) {
-        event.preventDefault(); // Evita envío inmediato
+        event.preventDefault();
         document.getElementById("popupConfirmacion").style.display = "flex";
         return false;
     }
@@ -105,10 +101,7 @@
 
     function confirmarEnvio() {
         cerrarPopup();
-        const form = document.getElementById("formNoticia");
-        form.setAttribute("action", "/SistemaDeNotificaciones/registrarNoticia");
-        console.log("🟢 Enviando a:", form.action);
-        form.submit();
+        document.querySelector("form").submit();
     }
 
     function cerrarPopupExito() {

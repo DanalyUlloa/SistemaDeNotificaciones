@@ -1,6 +1,5 @@
 package com.uabc.sistema.Vista;
 
-import com.google.gson.Gson;
 import com.uabc.sistema.Entidad.Noticia;
 import com.uabc.sistema.Persistencia.NoticiaDao;
 import com.uabc.sistema.Persistencia.db;
@@ -21,7 +20,6 @@ public class ObtenerNoticiasServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Asegurar que la codificación sea UTF-8 tanto en request como en response
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -30,13 +28,35 @@ public class ObtenerNoticiasServlet extends HttpServlet {
             NoticiaDao dao = new NoticiaDao(conexion);
             List<Noticia> lista = dao.obtenerTodas();
 
-            Gson gson = new Gson();
-            String json = gson.toJson(lista);
+            StringBuilder json = new StringBuilder();
+            json.append("[");
 
-            response.getWriter().write(json);
+            for (int i = 0; i < lista.size(); i++) {
+                Noticia noticia = lista.get(i);
+                json.append("{")
+                        .append("\"id\":").append(noticia.getId()).append(",")
+                        .append("\"titulo\":\"").append(escape(noticia.getTitulo())).append("\",")
+                        .append("\"contenido\":\"").append(escape(noticia.getContenido())).append("\",")
+                        .append("\"fecha\":\"").append(noticia.getFecha()).append("\",")
+                        .append("\"autor\":\"").append(escape(noticia.getAutor())).append("\",")
+                        .append("\"categoria\":\"").append(escape(noticia.getCategoria())).append("\"")
+                        .append("}");
+                if (i < lista.size() - 1) {
+                    json.append(",");
+                }
+            }
+
+            json.append("]");
+            response.getWriter().write(json.toString());
+
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\":\"No se pudieron obtener las noticias\"}");
         }
+    }
+
+    // Método auxiliar en JSON
+    private String escape(String texto) {
+        return texto == null ? "" : texto.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
     }
 }
