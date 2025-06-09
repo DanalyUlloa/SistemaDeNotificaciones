@@ -1,7 +1,9 @@
 package com.uabc.sistema.Vista;
 
 import com.uabc.sistema.Entidad.Usuario;
+import com.uabc.sistema.Entidad.HistorialNotificacion;
 import com.uabc.sistema.Persistencia.UsuarioDao;
+import com.uabc.sistema.Persistencia.HistorialDao;
 import com.uabc.sistema.Persistencia.db;
 import org.json.JSONObject;
 
@@ -12,6 +14,7 @@ import javax.servlet.http.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,8 +43,18 @@ public class PublicarNoticiaServlet extends HttpServlet {
                     enviarCorreo(usuario.getCorreo(), titulo, contenido);
                 }
 
+                // Guardar en historial de notificaciones
+                HistorialNotificacion h = new HistorialNotificacion();
+                h.setTitulo(titulo);
+                h.setContenido(contenido);
+                h.setAutor("Administrador"); // Puedes ajustar si se obtiene de sesión
+                h.setFecha(new Date());
+
+                HistorialDao historialDao = new HistorialDao(conexion);
+                historialDao.guardar(h);
+
                 resp.setStatus(HttpServletResponse.SC_OK);
-                resp.getWriter().write("{\"mensaje\":\"Noticia enviada por correo\"}");
+                resp.getWriter().write("{\"mensaje\":\"Noticia enviada y guardada en el historial\"}");
             }
 
         } catch (Exception e) {
@@ -53,7 +66,7 @@ public class PublicarNoticiaServlet extends HttpServlet {
 
     private void enviarCorreo(String destino, String titulo, String contenido) throws MessagingException {
         final String remitente = "alberto.alapisco@uabc.edu.mx";
-        final String contrasena = "sybe ltho gdkm mtqs";
+        final String contrasena = "sybe ltho gdkm mtqs"; // Usa variables de entorno en producción
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

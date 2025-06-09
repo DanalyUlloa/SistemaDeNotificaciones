@@ -12,6 +12,7 @@
         <servlet-class>com.uabc.sistema.Vista.ObtenerUsuariosServlet</servlet-class>
     </servlet>
 
+
     <servlet-mapping>
         <servlet-name>ObtenerUsuariosServlet</servlet-name>
         <url-pattern>/obtenerUsuarios</url-pattern>

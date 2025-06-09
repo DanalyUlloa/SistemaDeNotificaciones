@@ -11,18 +11,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-    <title>Menú Principal como Administrador</title>
+  <title>Menú Principal como Administrador</title>
   <link rel="stylesheet" href="../css/menuprincipal.css">
 </head>
-  <body>
-  <div class="container">
+<body>
+<div class="container">
 
-    <!-- Barra superior -->
-    <div class="header" style="position: relative;">
-      <div class="header-title">Gestor de Notificaciones</div>
+  <!-- Barra superior -->
+  <div class="header" style="position: relative;">
+    <div class="header-title">Gestor de Notificaciones</div>
 
-      <!-- Botón de cerrar sesión -->
-      <div class="logout" style="
+    <!-- Botón de cerrar sesión -->
+    <div class="logout" style="
            position: absolute;
            top: 10px;
            right: 20px;
@@ -31,57 +31,57 @@
            gap: 10px;
            font-size: 14px;
            font-weight: normal;">
-        <img src="../img/CerrarSesion.png"
-             alt="Cerrar sesión"
-             title="Cerrar sesión"
-             style="width: 40px; height: 40px; cursor: pointer;"
-             onclick="location.href='Login.html'">
-        <span style="white-space: nowrap;">
+      <img src="../img/CerrarSesion.png"
+           alt="Cerrar sesión"
+           title="Cerrar sesión"
+           style="width: 40px; height: 40px; cursor: pointer;"
+           onclick="location.href='Login.html'">
+      <span style="white-space: nowrap;">
           Bienvenid@ <%= usuario.getNombre() %> (<%= usuario.getCorreo() %>)
         </span>
-      </div>
-    </div>
-
-    <!-- Barra lateral izquierda -->
-    <div class="sidebar">
-      <% if (usuario.getPermisoRegistro() == 1) { %>
-      <div class="menu-item" onclick="location.href='GestionUsuarios.html'">
-        <div class="icon">
-          <img src="../img/usuario.png" alt="Gestión de Usuarios" class="icon-img">
-        </div>
-        <div class="text">Gestión de Usuarios</div>
-      </div>
-      <% } %>
-
-      <div class="menu-item" onclick="location.href='GestionNoticias.html'">
-        <div class="icon">
-          <img src="../img/noticiasG.png" alt="Gestión de Noticias" class="icon-img">
-        </div>
-        <div class="text">Gestión de Noticias</div>
-      </div>
-    </div>
-
-    <!-- Contenido principal -->
-    <div class="main-content">
-      <div class="notification-box">
-        <div class="box-title">Historial de publicaciones</div>
-        <div class="box-content">
-          <img src="../img/cimarron.png" alt="Cimarrón" class="image">
-        </div>
-      </div>
-    </div>
-
-    <!-- Barra inferior derecha con ayuda -->
-    <div class="help-box" onclick="location.href='Ayuda.html'">
-      <div class="help-icon"><img src="../img/ayuda.png" alt="Ayuda" class="icon-img"></div>
-      <div class="help-text">Ayuda</div>
     </div>
   </div>
 
-  <!-- Guarda el nombre en sessionStorage para autocompletar autor -->
-  <script>
-    sessionStorage.setItem("usuarioNombre", "<%= usuario.getNombre() %>");
-  </script>
+  <!-- Barra lateral izquierda -->
+  <div class="sidebar">
+    <% if (usuario.getPermisoRegistro() == 1) { %>
+    <div class="menu-item" onclick="location.href='GestionUsuarios.html'">
+      <div class="icon">
+        <img src="../img/usuario.png" alt="Gestión de Usuarios" class="icon-img">
+      </div>
+      <div class="text">Gestión de Usuarios</div>
+    </div>
+    <% } %>
 
-  </body>
+    <div class="menu-item" onclick="location.href='GestionNoticias.html'">
+      <div class="icon">
+        <img src="../img/noticiasG.png" alt="Gestión de Noticias" class="icon-img">
+      </div>
+      <div class="text">Gestión de Noticias</div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="notification-box" onclick="location.href='HistorialNotificaciones.html'" style="cursor: pointer;">
+      <div class="box-title">Historial de publicaciones</div>
+      <div class="box-content">
+        <img src="../img/cimarron.png" alt="Cimarrón" class="image">
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra inferior derecha con ayuda -->
+  <div class="help-box" onclick="location.href='Ayuda.html'">
+    <div class="help-icon"><img src="../img/ayuda.png" alt="Ayuda" class="icon-img"></div>
+    <div class="help-text">Ayuda</div>
+  </div>
+</div>
+
+<!-- Guarda el nombre en sessionStorage para autocompletar autor -->
+<script>
+  sessionStorage.setItem("usuarioNombre", "<%= usuario.getNombre() %>");
+</script>
+
+</body>
 </html>
